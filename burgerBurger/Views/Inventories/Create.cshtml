@@ -1,0 +1,67 @@
+﻿@model burgerBurger.Models.Inventory
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Inventory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="itemName" class="control-label"></label>
+                <input asp-for="itemName" class="form-control" />
+                <span asp-validation-for="itemName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="itemDescription" class="control-label"></label>
+                <input asp-for="itemDescription" class="form-control" />
+                <span asp-validation-for="itemDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="quantity" class="control-label"></label>
+                <input asp-for="quantity" class="form-control" />
+                <span asp-validation-for="quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="calories" class="control-label"></label>
+                <input asp-for="calories" class="form-control" />
+                <span asp-validation-for="calories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="itemCost" class="control-label"></label>
+                <input asp-for="itemCost" class="form-control" />
+                <span asp-validation-for="itemCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="itemShelfLife" class="control-label"></label>
+                <input asp-for="itemShelfLife" class="form-control" />
+                <span asp-validation-for="itemShelfLife" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="itemDeliveryDate" class="control-label"></label>
+                <input asp-for="itemDeliveryDate" class="form-control" />
+                <span asp-validation-for="itemDeliveryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LocationId" class="control-label"></label>
+                <select asp-for="LocationId" class ="form-control" asp-items="ViewBag.LocationId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
