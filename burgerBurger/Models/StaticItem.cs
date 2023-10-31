@@ -23,7 +23,11 @@ namespace burgerBurger.Models
         [Range(0, double.MaxValue)]
         public double Price { get; set; }
 
-        public ICollection<Inventory>? Ingredients { get; set; }
+        public List<Inventory>? Ingredients { get; set; }
+
+        public StaticItem() { 
+            Ingredients = new List<Inventory>();
+        }
 
     }
 }

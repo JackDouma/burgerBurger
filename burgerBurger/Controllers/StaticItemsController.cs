@@ -37,6 +37,12 @@ namespace burgerBurger.Controllers
 
             var staticItem = await _context.StaticItem
                 .FirstOrDefaultAsync(m => m.StaticItemId == id);
+            var itemInventories = await _context.ItemInventory.Where(i => i.ItemId == id).ToListAsync();
+            var inventories = await _context.Inventory.ToListAsync();
+            List<string> ings = new List<string>();
+            foreach (var item in itemInventories)
+                staticItem.Ingredients.Add(inventories.First(i => i.InventoryId == item.IngredientId));
+
             if (staticItem == null)
             {
                 return NotFound();
