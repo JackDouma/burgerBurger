@@ -48,6 +48,7 @@ namespace burgerBurger.Controllers
         // GET: StaticItems/Create
         public IActionResult Create()
         {
+            ViewData["Ingredients"] = new MultiSelectList(_context.Inventory, "InventoryId", "itemName");
             return View();
         }
 
@@ -56,11 +57,16 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StaticItemId,Type,Name,Description")] StaticItem staticItem)
+        public async Task<IActionResult> Create([Bind("StaticItemId,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients, int StaticItemId)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(staticItem);
+                await _context.SaveChangesAsync();
+                foreach (int i in Ingredients)
+                {
+                    _context.ItemInventory.Add(new ItemInventory(_context.StaticItem.OrderBy(i => i.StaticItemId).Last().StaticItemId, i));
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -88,7 +94,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StaticItemId,Type,Name,Description")] StaticItem staticItem)
+        public async Task<IActionResult> Edit(int id, [Bind("StaticItemId,Type,Name,Description,Price")] StaticItem staticItem)
         {
             if (id != staticItem.StaticItemId)
             {
@@ -149,6 +155,9 @@ namespace burgerBurger.Controllers
             if (staticItem != null)
             {
                 _context.StaticItem.Remove(staticItem);
+                var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.StaticItemId);
+                foreach (var item in cor) 
+                    _context.ItemInventory.Remove(item);
             }
             
             await _context.SaveChangesAsync();

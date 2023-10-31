@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace burgerBurger.Models
 {
-    public class StaticItem : OrderItem
+    public class StaticItem
     {
 
         public int StaticItemId { get; set; }
@@ -17,7 +17,13 @@ namespace burgerBurger.Models
 
         [Required]
         [MaxLength(255)]
-        public string? Description { get; set; } 
+        public string? Description { get; set; }
+
+        [Required]
+        [Range(0, double.MaxValue)]
+        public double Price { get; set; }
+
+        public ICollection<Inventory>? Ingredients { get; set; }
 
     }
 }

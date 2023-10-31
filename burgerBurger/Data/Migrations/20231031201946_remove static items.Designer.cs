@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using burgerBurger.Data;
 
@@ -11,9 +12,10 @@ using burgerBurger.Data;
 namespace burgerBurger.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231031201946_remove static items")]
+    partial class removestaticitems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +33,6 @@ namespace burgerBurger.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InventoryId"), 1L, 1);
 
                     b.Property<int>("LocationId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("StaticItemId")
                         .HasColumnType("int");
 
                     b.Property<int>("calories")
@@ -65,28 +64,7 @@ namespace burgerBurger.Data.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("StaticItemId");
-
                     b.ToTable("Inventory");
-                });
-
-            modelBuilder.Entity("burgerBurger.Models.ItemInventory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ItemInventory");
                 });
 
             modelBuilder.Entity("burgerBurger.Models.Location", b =>
@@ -115,35 +93,6 @@ namespace burgerBurger.Data.Migrations
                     b.HasKey("LocationId");
 
                     b.ToTable("Location");
-                });
-
-            modelBuilder.Entity("burgerBurger.Models.StaticItem", b =>
-                {
-                    b.Property<int>("StaticItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaticItemId"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("StaticItemId");
-
-                    b.ToTable("StaticItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -356,10 +305,6 @@ namespace burgerBurger.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("burgerBurger.Models.StaticItem", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("StaticItemId");
-
                     b.Navigation("Location");
                 });
 
@@ -417,11 +362,6 @@ namespace burgerBurger.Data.Migrations
             modelBuilder.Entity("burgerBurger.Models.Location", b =>
                 {
                     b.Navigation("Inventories");
-                });
-
-            modelBuilder.Entity("burgerBurger.Models.StaticItem", b =>
-                {
-                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

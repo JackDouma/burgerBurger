@@ -11,6 +11,8 @@ namespace burgerBurger.Data
         {
         }
         public DbSet<Location> Location { get; set; }
-        public DbSet<burgerBurger.Models.Inventory> Inventory { get; set; }
+        public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<StaticItem> StaticItem { get; set; }
+        public DbSet<ItemInventory> ItemInventory { get; set; }
     }
 }
