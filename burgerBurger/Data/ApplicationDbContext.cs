@@ -9,5 +9,7 @@ namespace burgerBurger.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
 
         public DbSet<Location> Locations { get; set; }
+
+        public DbSet<StaticItem>? StaticItem { get; set; }
     }
 }
