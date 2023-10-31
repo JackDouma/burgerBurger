@@ -4,20 +4,25 @@ namespace burgerBurger.Models
 {
     public class Location
     {
-
+        // variables
         public int LocationId { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string? City { get; set; }
+        [Display(Name = "City")]
+        [MaxLength(25)]
+        public string? locationCity { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string? Province { get; set; }
+        [Display(Name = "Province")]
+        [MaxLength(25)]
+        public string? locationProvince { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string? Address { get; set; }
+        [Display(Name = "Address")]
+        [MaxLength(50)]
+        public string? locationAddress { get; set; }
 
+        // child ref
+        public List<Inventory>? Inventories { get; set; }
     }
 }

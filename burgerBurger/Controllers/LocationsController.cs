@@ -22,20 +22,20 @@ namespace burgerBurger.Controllers
         // GET: Locations
         public async Task<IActionResult> Index()
         {
-              return _context.Locations != null ? 
-                          View(await _context.Locations.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Locations'  is null.");
+              return _context.Location != null ? 
+                          View(await _context.Location.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Location'  is null.");
         }
 
         // GET: Locations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Locations == null)
+            if (id == null || _context.Location == null)
             {
                 return NotFound();
             }
 
-            var location = await _context.Locations
+            var location = await _context.Location
                 .FirstOrDefaultAsync(m => m.LocationId == id);
             if (location == null)
             {
@@ -56,7 +56,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationId,City,Province,Address")] Location location)
+        public async Task<IActionResult> Create([Bind("LocationId,locationCity,locationProvince,locationAddress")] Location location)
         {
             if (ModelState.IsValid)
             {
@@ -70,12 +70,12 @@ namespace burgerBurger.Controllers
         // GET: Locations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Locations == null)
+            if (id == null || _context.Location == null)
             {
                 return NotFound();
             }
 
-            var location = await _context.Locations.FindAsync(id);
+            var location = await _context.Location.FindAsync(id);
             if (location == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationId,City,Province,Address")] Location location)
+        public async Task<IActionResult> Edit(int id, [Bind("LocationId,locationCity,locationProvince,locationAddress")] Location location)
         {
             if (id != location.LocationId)
             {
@@ -121,12 +121,12 @@ namespace burgerBurger.Controllers
         // GET: Locations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Locations == null)
+            if (id == null || _context.Location == null)
             {
                 return NotFound();
             }
 
-            var location = await _context.Locations
+            var location = await _context.Location
                 .FirstOrDefaultAsync(m => m.LocationId == id);
             if (location == null)
             {
@@ -141,14 +141,14 @@ namespace burgerBurger.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Locations == null)
+            if (_context.Location == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Locations'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Location'  is null.");
             }
-            var location = await _context.Locations.FindAsync(id);
+            var location = await _context.Location.FindAsync(id);
             if (location != null)
             {
-                _context.Locations.Remove(location);
+                _context.Location.Remove(location);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace burgerBurger.Controllers
 
         private bool LocationExists(int id)
         {
-          return (_context.Locations?.Any(e => e.LocationId == id)).GetValueOrDefault();
+          return (_context.Location?.Any(e => e.LocationId == id)).GetValueOrDefault();
         }
     }
 }

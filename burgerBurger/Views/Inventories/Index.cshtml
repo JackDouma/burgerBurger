@@ -1,0 +1,77 @@
+﻿@model IEnumerable<burgerBurger.Models.Inventory>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.itemName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.itemDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.calories)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.itemCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.itemShelfLife)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.itemDeliveryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.itemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.itemDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.calories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.itemCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.itemShelfLife)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.itemDeliveryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location.locationAddress)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.InventoryId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.InventoryId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

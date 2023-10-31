@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using burgerBurger.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using burgerBurger.Models;
 
 namespace burgerBurger.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {}
-
-        public DbSet<Location> Locations { get; set; }
-
-        public DbSet<StaticItem>? StaticItem { get; set; }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+        public DbSet<Location> Location { get; set; }
+        public DbSet<burgerBurger.Models.Inventory> Inventory { get; set; }
     }
 }
