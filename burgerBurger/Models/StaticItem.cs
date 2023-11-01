@@ -19,6 +19,9 @@ namespace burgerBurger.Models
         [MaxLength(255)]
         public string? Description { get; set; }
 
+        [Range(0, int.MaxValue)]
+        public int totalCalories { get; set; }
+
         [Required]
         [Range(0, double.MaxValue)]
         [DisplayFormat(DataFormatString = "{0:c}")]
