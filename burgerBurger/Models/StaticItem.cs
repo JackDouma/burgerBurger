@@ -1,4 +1,5 @@
 ﻿using burgerBurger.Enums;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace burgerBurger.Models
@@ -20,6 +21,7 @@ namespace burgerBurger.Models
         public string? Description { get; set; }
 
         [Range(0, int.MaxValue)]
+        [DisplayName("Total Calories")]
         public int totalCalories { get; set; }
 
         [Required]

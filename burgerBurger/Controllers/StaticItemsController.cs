@@ -71,8 +71,11 @@ namespace burgerBurger.Controllers
                 await _context.SaveChangesAsync();
                 foreach (int i in Ingredients)
                 {
+                    staticItem.totalCalories += _context.Inventory.OrderBy(e => e.InventoryId).Where(e => e.InventoryId == i).Last().calories;
                     _context.ItemInventory.Add(new ItemInventory(_context.StaticItem.OrderBy(i => i.StaticItemId).Last().StaticItemId, i));
                 }
+                await _context.SaveChangesAsync();
+                _context.StaticItem.Update(staticItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
