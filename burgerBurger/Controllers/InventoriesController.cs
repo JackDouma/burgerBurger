@@ -61,6 +61,7 @@ namespace burgerBurger.Controllers
         {
             if (ModelState.IsValid)
             {
+                // get expirary date
                 inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
 
                 _context.Add(inventory);
@@ -104,6 +105,9 @@ namespace burgerBurger.Controllers
             {
                 try
                 {
+                    // get expirary date
+                    inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
+
                     _context.Update(inventory);
                     await _context.SaveChangesAsync();
                 }
