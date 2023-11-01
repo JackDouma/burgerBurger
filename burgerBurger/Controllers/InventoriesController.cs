@@ -61,6 +61,8 @@ namespace burgerBurger.Controllers
         {
             if (ModelState.IsValid)
             {
+                inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
+
                 _context.Add(inventory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
