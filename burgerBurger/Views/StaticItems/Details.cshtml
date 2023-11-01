@@ -53,6 +53,14 @@
         </tr>
     }
 }
+            @if(Model.Ingredients.Count == 0)
+            {
+                <tr>
+                    <td>
+                        N/A
+                    </td>
+                </tr>
+            }
         </dd>
     </dl>
 </div>

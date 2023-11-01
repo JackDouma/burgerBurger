@@ -63,7 +63,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StaticItemId,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients, int StaticItemId)
+        public async Task<IActionResult> Create([Bind("StaticItemId,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StaticItemId,Type,Name,Description,Price")] StaticItem staticItem)
+        public async Task<IActionResult> Edit(int id, [Bind("StaticItemId,Type,Name,Description,Price")] StaticItem staticItem, List<int> Ingredients)
         {
             if (id != staticItem.StaticItemId)
             {
@@ -116,6 +116,16 @@ namespace burgerBurger.Controllers
                 try
                 {
                     _context.Update(staticItem);
+                    await _context.SaveChangesAsync();
+                    var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.StaticItemId);
+                    foreach (var item in cor)
+                        _context.ItemInventory.Remove(item);
+                    await _context.SaveChangesAsync();
+                    foreach (int i in Ingredients)
+                    {
+                        staticItem.totalCalories += _context.Inventory.OrderBy(e => e.InventoryId).Where(e => e.InventoryId == i).Last().calories;
+                        _context.ItemInventory.Add(new ItemInventory(_context.StaticItem.OrderBy(i => i.StaticItemId).Last().StaticItemId, i));
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -133,6 +143,7 @@ namespace burgerBurger.Controllers
             }
             return View(staticItem);
         }
+
 
         // GET: StaticItems/Delete/5
         public async Task<IActionResult> Delete(int? id)
