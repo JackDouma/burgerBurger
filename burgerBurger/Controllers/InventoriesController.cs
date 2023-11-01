@@ -70,7 +70,7 @@ namespace burgerBurger.Controllers
                 {
                     inventory.itemExpireCheck = false;
                 }
-                else if(DateTime.Now < inventory.itemExpirey)
+                else if(DateTime.Now <= inventory.itemExpirey)
                 {
                     inventory.itemExpireCheck = true;
                 }
@@ -124,7 +124,7 @@ namespace burgerBurger.Controllers
                     {
                         inventory.itemExpireCheck = false;
                     }
-                    else if (DateTime.Now < inventory.itemExpirey)
+                    else if (DateTime.Now <= inventory.itemExpirey)
                     {
                         inventory.itemExpireCheck = true;
                     }

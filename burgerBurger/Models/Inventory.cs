@@ -41,10 +41,12 @@ namespace burgerBurger.Models
         public int itemShelfLife { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Display(Name = "Delivery Date")]
         public DateTime itemDeliveryDate { get; set; }
 
         [Display(Name = "Expiry")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime itemExpirey { get; set; }
 
         [Display(Name = "Expire Check")]
