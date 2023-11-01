@@ -21,6 +21,7 @@ namespace burgerBurger.Models
 
         [Required]
         [Range(0, double.MaxValue)]
+        [DisplayFormat(DataFormatString = "{0:c}")]
         public double Price { get; set; }
 
         public List<Inventory>? Ingredients { get; set; }

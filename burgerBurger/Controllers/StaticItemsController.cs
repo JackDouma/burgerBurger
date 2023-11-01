@@ -92,6 +92,7 @@ namespace burgerBurger.Controllers
             {
                 return NotFound();
             }
+            ViewData["Ingredients"] = new MultiSelectList(_context.Inventory, "InventoryId", "itemName");
             return View(staticItem);
         }
 
