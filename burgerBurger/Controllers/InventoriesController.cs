@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using burgerBurger.Data;
 using burgerBurger.Models;
+using System.Composition;
 
 namespace burgerBurger.Controllers
 {
@@ -21,7 +22,7 @@ namespace burgerBurger.Controllers
 
         // GET: Inventories
         public async Task<IActionResult> Index()
-        {
+        { 
             var applicationDbContext = _context.Inventory.Include(i => i.Location);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -63,6 +64,16 @@ namespace burgerBurger.Controllers
             {
                 // get expirary date
                 inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
+
+                // expire check
+                if (DateTime.Now > inventory.itemExpirey)
+                {
+                    inventory.itemExpireCheck = false;
+                }
+                else if(DateTime.Now < inventory.itemExpirey)
+                {
+                    inventory.itemExpireCheck = true;
+                }
 
                 _context.Add(inventory);
                 await _context.SaveChangesAsync();
@@ -108,6 +119,15 @@ namespace burgerBurger.Controllers
                     // get expirary date
                     inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
 
+                    // expire check
+                    if (DateTime.Now > inventory.itemExpirey)
+                    {
+                        inventory.itemExpireCheck = false;
+                    }
+                    else if (DateTime.Now < inventory.itemExpirey)
+                    {
+                        inventory.itemExpireCheck = true;
+                    }
                     _context.Update(inventory);
                     await _context.SaveChangesAsync();
                 }

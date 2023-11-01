@@ -47,6 +47,9 @@ namespace burgerBurger.Models
         [Display(Name = "Expiry")]
         public DateTime itemExpirey { get; set; }
 
+        [Display(Name = "Expire Check")]
+        public Boolean itemExpireCheck { get; set; }
+
         // forgien key
         [Display(Name = "Location")]
         public int LocationId { get; set; }
