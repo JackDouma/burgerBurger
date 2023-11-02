@@ -45,18 +45,7 @@ namespace burgerBurger.Controllers
             return View(location);
         }
 
-        // GET: Locations/Inventory
-        public IActionResult Inventory(int locationId)
-        {
-            ViewData["locationId"] = locationId;
-
-            var inventory = _context.Inventory
-                .Where(i => i.Location.LocationId == locationId)
-                .OrderBy(i => i.itemExpirey)
-                .ToList();
-
-            return View(inventory);
-        }
+  
 
         // GET: Locations/Create
         public IActionResult Create()

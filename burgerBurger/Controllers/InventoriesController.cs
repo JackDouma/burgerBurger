@@ -21,10 +21,28 @@ namespace burgerBurger.Controllers
         }
 
         // GET: Inventories
-        public async Task<IActionResult> Index()
-        { 
-            var applicationDbContext = _context.Inventory.Include(i => i.Location);
-            return View(await applicationDbContext.ToListAsync());
+        //public async Task<IActionResult> Index()
+        //{ 
+            //var applicationDbContext = _context.Inventory.Include(i => i.Location);
+            //return View(await applicationDbContext.ToListAsync());
+        //}
+
+        //GET: Inventories
+        public IActionResult Index(int locationId)
+        {
+            if (locationId == 0)
+            {
+                return NotFound();
+            }
+
+            ViewData["locationId"] = locationId;
+
+            var inventory = _context.Inventory
+                .Where(i => i.Location.LocationId == locationId)
+                .OrderBy(i => i.itemExpirey)
+                .ToList();
+
+            return View(inventory);
         }
 
         // GET: Inventories/Details/5

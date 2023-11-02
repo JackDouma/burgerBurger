@@ -29,7 +29,7 @@
                     @Html.DisplayFor(modelItem => item.locationCity) @Html.DisplayFor(modelItem => item.locationProvince) @Html.DisplayFor(modelItem => item.locationAddress)
             </td>
             <td>
-                    <a asp-controller="Locations" asp-action="Inventory" asp-route-locationId="@item.LocationId">View</a>
+                    <a asp-controller="Inventories" asp-action="Index" asp-route-locationId="@item.LocationId">View</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.LocationId">Edit</a> |
