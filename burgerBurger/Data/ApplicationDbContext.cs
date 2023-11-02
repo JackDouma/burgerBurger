@@ -12,7 +12,9 @@ namespace burgerBurger.Data
         }
         public DbSet<Location> Location { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<StaticItem> StaticItem { get; set; }
         public DbSet<ItemInventory> ItemInventory { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }

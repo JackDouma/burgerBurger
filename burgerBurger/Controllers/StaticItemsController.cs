@@ -22,9 +22,9 @@ namespace burgerBurger.Controllers
         // GET: StaticItems
         public async Task<IActionResult> Index()
         {
-              return _context.StaticItem != null ? 
-                          View(await _context.StaticItem.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.StaticItem'  is null.");
+            return _context.StaticItem != null ?
+                        View(await _context.StaticItem.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.StaticItem'  is null.");
         }
 
         // GET: StaticItems/Details/5
@@ -36,7 +36,7 @@ namespace burgerBurger.Controllers
             }
 
             var staticItem = await _context.StaticItem
-                .FirstOrDefaultAsync(m => m.StaticItemId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             var itemInventories = await _context.ItemInventory.Where(i => i.ItemId == id).ToListAsync();
             var inventories = await _context.Inventory.ToListAsync();
             List<string> ings = new List<string>();
@@ -63,7 +63,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StaticItemId,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients)
+        public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace burgerBurger.Controllers
                 foreach (int i in Ingredients)
                 {
                     staticItem.totalCalories += _context.Inventory.OrderBy(e => e.InventoryId).Where(e => e.InventoryId == i).Last().calories;
-                    _context.ItemInventory.Add(new ItemInventory(_context.StaticItem.OrderBy(i => i.StaticItemId).Last().StaticItemId, i));
+                    _context.ItemInventory.Add(new ItemInventory(_context.StaticItem.OrderBy(i => i.Id).Last().Id, i));
                 }
                 await _context.SaveChangesAsync();
                 _context.StaticItem.Update(staticItem);
@@ -104,9 +104,9 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StaticItemId,Type,Name,Description,Price")] StaticItem staticItem, List<int> Ingredients)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int> Ingredients)
         {
-            if (id != staticItem.StaticItemId)
+            if (id != staticItem.Id)
             {
                 return NotFound();
             }
@@ -117,20 +117,20 @@ namespace burgerBurger.Controllers
                 {
                     _context.Update(staticItem);
                     await _context.SaveChangesAsync();
-                    var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.StaticItemId);
+                    var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.Id);
                     foreach (var item in cor)
                         _context.ItemInventory.Remove(item);
                     await _context.SaveChangesAsync();
                     foreach (int i in Ingredients)
                     {
                         staticItem.totalCalories += _context.Inventory.OrderBy(e => e.InventoryId).Where(e => e.InventoryId == i).Last().calories;
-                        _context.ItemInventory.Add(new ItemInventory(_context.StaticItem.OrderBy(i => i.StaticItemId).Last().StaticItemId, i));
+                        _context.ItemInventory.Add(new ItemInventory(id, i));
                     }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StaticItemExists(staticItem.StaticItemId))
+                    if (!StaticItemExists(staticItem.Id))
                     {
                         return NotFound();
                     }
@@ -154,7 +154,7 @@ namespace burgerBurger.Controllers
             }
 
             var staticItem = await _context.StaticItem
-                .FirstOrDefaultAsync(m => m.StaticItemId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (staticItem == null)
             {
                 return NotFound();
@@ -176,18 +176,18 @@ namespace burgerBurger.Controllers
             if (staticItem != null)
             {
                 _context.StaticItem.Remove(staticItem);
-                var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.StaticItemId);
-                foreach (var item in cor) 
+                var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.Id);
+                foreach (var item in cor)
                     _context.ItemInventory.Remove(item);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool StaticItemExists(int id)
         {
-          return (_context.StaticItem?.Any(e => e.StaticItemId == id)).GetValueOrDefault();
+            return (_context.StaticItem?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
