@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<burgerBurger.Models.Location>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Location";
 }
 
-<h1>Index</h1>
+<h1>Locations</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,28 +13,23 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.locationCity)
+                Store Location
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.locationProvince)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.locationAddress)
+                View Inventory
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model) 
+{
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.locationCity)
+                    @Html.DisplayFor(modelItem => item.locationCity) @Html.DisplayFor(modelItem => item.locationProvince) @Html.DisplayFor(modelItem => item.locationAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.locationProvince)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.locationAddress)
+                    <a asp-controller="Locations" asp-action="Inventory" asp-route-locationId="@item.LocationId">View</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.LocationId">Edit</a> |
