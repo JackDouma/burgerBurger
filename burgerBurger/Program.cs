@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 
         builder.Services.AddControllersWithViews();
 
+        builder.Services.AddSession();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -103,6 +104,7 @@ using Microsoft.EntityFrameworkCore;
          *   }
          */
 
+        app.UseSession();
         app.Run();
 
     }

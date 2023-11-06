@@ -16,5 +16,7 @@ namespace burgerBurger.Data
         public DbSet<StaticItem> StaticItem { get; set; }
         public DbSet<ItemInventory> ItemInventory { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -63,6 +63,7 @@ namespace burgerBurger.Controllers
                 {
                     ItemId = id,
                     Quantity = 1,
+                    Price = (decimal)product.Price,
                     CustomerId = GetCustomerId()
                 };
 
@@ -71,6 +72,7 @@ namespace burgerBurger.Controllers
             else
             {
                 cartItem.Quantity += 1;
+                cartItem.Price += (decimal)product.Price;
                 _context.Update(cartItem);
             }
 

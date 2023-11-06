@@ -10,11 +10,15 @@ namespace burgerBurger.Models
         public int Quantity { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:c}")]
+        public decimal Price { get; set; }
+
+        [Required]
         public string? CustomerId { get; set; }
 
         [Required]
         public int ItemId { get; set; }
 
-        public OrderItem Item { get; set; }
+        public OrderItem? Item { get; set; }
     }
 }
