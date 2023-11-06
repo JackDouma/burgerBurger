@@ -17,7 +17,7 @@ namespace burgerBurger.Models
         public int OrderId { get; set; }
 
         [Required]
-        public int ProductId { get; set; }
+        public int ItemId { get; set; }
 
         //Parent references. This is a junction table to reconcile the many-to-many orders->products relationship
         public Order? Order { get; set; }
