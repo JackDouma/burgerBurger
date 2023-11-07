@@ -44,6 +44,23 @@ namespace burgerBurger.Controllers
 
             return View(inventory);
         }
+        //GET: Inventories/BalanceSheet
+        public IActionResult BalanceSheet(int locationId)
+        {
+            if (locationId == 0)
+            {
+                return NotFound();
+            }
+
+            ViewData["locationId"] = locationId;
+
+            var inventory = _context.Inventory
+                .Where(i => i.Location.LocationId == locationId)
+                .OrderBy(i => i.itemExpirey)
+                .ToList();
+
+            return View(inventory);
+        }
 
         // GET: Inventories/Details/5
         public async Task<IActionResult> Details(int? id)

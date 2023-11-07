@@ -1,0 +1,66 @@
+﻿@model IEnumerable<burgerBurger.Models.Inventory>
+
+@{
+    ViewData["Title"] = "Balance Sheet";
+    decimal liability = 0;
+    decimal equity = 0;
+    decimal total = 0;
+
+    foreach (var item in Model)
+    {
+        liability += item.itemCost;
+    }
+    total = equity - liability;
+}
+
+<h1>Balance Sheet</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.itemName)
+            </th>          
+            <th>
+                @Html.DisplayNameFor(model => model.itemCost)
+            </th>         
+            <th>
+                @Html.DisplayNameFor(model => model.itemDeliveryDate)
+            </th>         
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemName)
+                </td>              
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemCost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemDeliveryDate)
+                </td>
+            </tr>
+        }
+        <tr>
+            <td class="font-weight-bold">
+                @String.Format("Total Item Liabilities: {0:c}", liability)
+            </td>
+            <td class="font-weight-bold">
+                @String.Format("Total Order Equity: {0:c}", equity)
+            </td>
+            <td class="font-weight-bold">
+                @String.Format("Profit: {0:c}", total)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="text-left">
+                <a asp-action="Index" asp-route-locationId="@ViewData["locationId"]" class="btn btn-primary">Back</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

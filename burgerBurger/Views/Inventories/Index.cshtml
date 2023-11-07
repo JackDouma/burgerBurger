@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Inventory";
+    
 }
 
 <h1>Inventory</h1>
@@ -16,16 +17,10 @@
                 @Html.DisplayNameFor(model => model.itemName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.itemDescription)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.quantity)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.calories)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.itemCost)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.itemShelfLife)
@@ -43,40 +38,40 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.itemName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.itemDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.calories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.itemCost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.itemShelfLife)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.calories)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemShelfLife)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.itemDeliveryDate)
-            </td>
-            <td>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.itemExpirey)
-            </td>
-            <td>
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.itemExpireCheck)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.InventoryId">Delete</a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.InventoryId">Delete</a>
+                </td>
+            </tr>          
+        }
+        <tr>
+            <td colspan="3" class="text-center">
+                <a asp-action="BalanceSheet" asp-route-locationId="@ViewData["locationId"]" class="btn btn-primary">Balance Sheet</a>
             </td>
         </tr>
-}
     </tbody>
 </table>
