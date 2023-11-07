@@ -1,0 +1,49 @@
+﻿@model IEnumerable<burgerBurger.Models.Inventory>
+
+@{
+    ViewData["Title"] = "Garbage";
+}
+
+<h1>Garbage</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.itemName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.itemExpirey)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.itemDeliveryDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemExpirey)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.itemDeliveryDate)
+                </td>
+                <td>
+                    <a asp-action="UndoThrowOut" asp-route-id="@item.InventoryId">Undo</a>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="3" class="text-left">
+                <a asp-action="Index" asp-route-locationId="@ViewData["locationId"]" class="btn btn-primary">Back</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

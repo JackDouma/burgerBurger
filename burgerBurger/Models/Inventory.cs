@@ -52,6 +52,9 @@ namespace burgerBurger.Models
         [Display(Name = "Expire Check")]
         public Boolean itemExpireCheck { get; set; }
 
+        [Display(Name = "Thrown Out")]
+        public Boolean itemThrowOutCheck { get; set; }
+
         // forgien key
         [Display(Name = "Location")]
         public int LocationId { get; set; }
@@ -63,6 +66,7 @@ namespace burgerBurger.Models
         public Inventory()
         {
             quantity = 1;
+            itemThrowOutCheck = false;
             itemDeliveryDate = DateTime.Now;
         }
     }

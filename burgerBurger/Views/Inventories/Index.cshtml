@@ -64,13 +64,16 @@
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.InventoryId">Delete</a>
+                    <a asp-action="ThrowOut" asp-route-id="@item.InventoryId">Throw Out</a>
                 </td>
             </tr>          
         }
         <tr>
             <td colspan="3" class="text-center">
                 <a asp-action="BalanceSheet" asp-route-locationId="@ViewData["locationId"]" class="btn btn-primary">Balance Sheet</a>
+            </td>
+            <td colspan="3" class="text-center">
+                <a asp-action="ThrownOutItems" asp-route-locationId="@ViewData["locationId"]" class="btn btn-primary">View Garbage</a>
             </td>
         </tr>
     </tbody>

@@ -39,11 +39,41 @@ namespace burgerBurger.Controllers
 
             var inventory = _context.Inventory
                 .Where(i => i.Location.LocationId == locationId)
+                .Where(i => i.itemThrowOutCheck == false)
                 .OrderBy(i => i.itemExpirey)
                 .ToList();
 
             return View(inventory);
         }
+
+        [HttpGet]
+        public IActionResult ThrowOut(int id)
+        {
+            var item = _context.Inventory.Find(id);
+
+            if (item != null)
+            {
+                item.itemThrowOutCheck = true;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index", new { locationId = item.LocationId });
+        }
+
+        [HttpGet]
+        public IActionResult UndoThrowOut(int id)
+        {
+            var item = _context.Inventory.Find(id);
+
+            if (item != null)
+            {
+                item.itemThrowOutCheck = false;
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ThrownOutItems", new { locationId = item.LocationId });
+        }
+
         //GET: Inventories/BalanceSheet
         public IActionResult BalanceSheet(int locationId)
         {
@@ -56,6 +86,25 @@ namespace burgerBurger.Controllers
 
             var inventory = _context.Inventory
                 .Where(i => i.Location.LocationId == locationId)
+                .OrderBy(i => i.itemExpirey)
+                .ToList();
+
+            return View(inventory);
+        }
+
+        //GET: Inventories/BalanceSheet
+        public IActionResult ThrownOutItems(int locationId)
+        {
+            if (locationId == 0)
+            {
+                return NotFound();
+            }
+
+            ViewData["locationId"] = locationId;
+
+            var inventory = _context.Inventory
+                .Where(i => i.Location.LocationId == locationId)
+                .Where(i => i.itemThrowOutCheck == true)
                 .OrderBy(i => i.itemExpirey)
                 .ToList();
 
