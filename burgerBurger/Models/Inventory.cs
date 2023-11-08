@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using burgerBurger.Enums;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,7 +25,6 @@ namespace burgerBurger.Models
         [Range(1, 10000, ErrorMessage = "Quantity must be between 1-10,000")]
         public int quantity { get; set; }
 
-        [Required]
         [Display(Name = "Calories")]
         [Range(0, 2000, ErrorMessage = "Calories must be between 0-2000")]
         public int calories { get; set; }
@@ -35,7 +35,6 @@ namespace burgerBurger.Models
         [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal itemCost { get; set; }
 
-        [Required]
         [Display(Name = "Shelf Life(days)")]
         [Range(0, 2000, ErrorMessage = "Shelf Life must be between 1-365")]
         public int itemShelfLife { get; set; }
@@ -54,6 +53,9 @@ namespace burgerBurger.Models
 
         [Display(Name = "Thrown Out")]
         public Boolean itemThrowOutCheck { get; set; }
+
+        [Required]
+        public InventoryCategory Category { get; set; }
 
         // forgien key
         [Display(Name = "Location")]

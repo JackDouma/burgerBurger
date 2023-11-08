@@ -8,11 +8,14 @@
 <h1>Inventory</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.itemName)
             </th>
@@ -41,6 +44,9 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.itemName)
                 </td>

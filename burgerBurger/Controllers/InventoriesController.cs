@@ -142,22 +142,32 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
+        public async Task<IActionResult> Create([Bind("Category,InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
         {
             if (ModelState.IsValid)
             {
-                // get expirary date
-                inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
+                // if package
+                if (inventory.Category == Enums.InventoryCategory.Package)
+                {
+                    inventory.calories = 0;
+                    inventory.itemShelfLife = 0;
+                }
+                // if not package
+                else
+                {
+                    // get expirary date
+                    inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
 
-                // expire check
-                if (DateTime.Now > inventory.itemExpirey)
-                {
-                    inventory.itemExpireCheck = false;
-                }
-                else if(DateTime.Now <= inventory.itemExpirey)
-                {
-                    inventory.itemExpireCheck = true;
-                }
+                    // expire check
+                    if (DateTime.Now > inventory.itemExpirey)
+                    {
+                        inventory.itemExpireCheck = false;
+                    }
+                    else if (DateTime.Now <= inventory.itemExpirey)
+                    {
+                        inventory.itemExpireCheck = true;
+                    }
+                }                 
 
                 _context.Add(inventory);
                 await _context.SaveChangesAsync();
@@ -189,7 +199,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
+        public async Task<IActionResult> Edit(int id, [Bind("Category,InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
         {
             if (id != inventory.InventoryId)
             {
@@ -200,18 +210,29 @@ namespace burgerBurger.Controllers
             {
                 try
                 {
-                    // get expirary date
-                    inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
+                    // if package
+                    if (inventory.Category == Enums.InventoryCategory.Package)
+                    {
+                        inventory.calories = 0;
+                        inventory.itemShelfLife = 0;
+                    }
+                    // if not package
+                    else
+                    {
+                        // get expirary date
+                        inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife);
 
-                    // expire check
-                    if (DateTime.Now > inventory.itemExpirey)
-                    {
-                        inventory.itemExpireCheck = false;
+                        // expire check
+                        if (DateTime.Now > inventory.itemExpirey)
+                        {
+                            inventory.itemExpireCheck = false;
+                        }
+                        else if (DateTime.Now <= inventory.itemExpirey)
+                        {
+                            inventory.itemExpireCheck = true;
+                        }
                     }
-                    else if (DateTime.Now <= inventory.itemExpirey)
-                    {
-                        inventory.itemExpireCheck = true;
-                    }
+
                     _context.Update(inventory);
                     await _context.SaveChangesAsync();
                 }
