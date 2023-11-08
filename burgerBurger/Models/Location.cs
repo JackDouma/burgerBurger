@@ -8,6 +8,11 @@ namespace burgerBurger.Models
         public int LocationId { get; set; }
 
         [Required]
+        [Display(Name = "Name")]
+        [MaxLength(25)]
+        public string? LocationName { get; set; }
+
+        [Required]
         [Display(Name = "City")]
         [MaxLength(25)]
         public string? locationCity { get; set; }
@@ -24,5 +29,7 @@ namespace burgerBurger.Models
 
         // child ref
         public List<Inventory>? Inventories { get; set; }
+
+        public string? DisplayName { get; set; }
     }
 }

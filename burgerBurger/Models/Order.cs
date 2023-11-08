@@ -36,12 +36,19 @@ namespace burgerBurger.Models
         public string? Phone { get; set; }
 
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Customer Email")]
         [MaxLength(100)]
         public string? CustomerId { get; set; }
 
         [MaxLength(100)]
         public string? PaymentCode { get; set; }
+
+        // forgien key
+        [Display(Name = "Location")]
+        public int LocationId { get; set; }
+
+        // parent ref
+        public Location? Location { get; set; }
 
         // Child Reference
         public List<OrderDetail>? OrderDetails { get; set; }

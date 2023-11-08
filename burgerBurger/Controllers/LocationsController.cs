@@ -58,10 +58,11 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationId,locationCity,locationProvince,locationAddress")] Location location)
+        public async Task<IActionResult> Create([Bind("LocationId,LocationName,locationCity,locationProvince,locationAddress")] Location location)
         {
             if (ModelState.IsValid)
             {
+                location.DisplayName = location.LocationName + " - " + location.locationCity + " " + location.locationProvince + " " + location.locationAddress;
                 _context.Add(location);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -90,7 +91,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationId,locationCity,locationProvince,locationAddress")] Location location)
+        public async Task<IActionResult> Edit(int id, [Bind("LocationId,LocationName,locationCity,locationProvince,locationAddress")] Location location)
         {
             if (id != location.LocationId)
             {
@@ -101,6 +102,7 @@ namespace burgerBurger.Controllers
             {
                 try
                 {
+                    location.DisplayName = location.LocationName + " - " + location.locationCity + " " + location.locationProvince + " " + location.locationAddress;
                     _context.Update(location);
                     await _context.SaveChangesAsync();
                 }

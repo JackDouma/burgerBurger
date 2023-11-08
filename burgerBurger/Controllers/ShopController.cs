@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using burgerBurger.Enums;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace burgerBurger.Controllers
 {
@@ -129,13 +130,14 @@ namespace burgerBurger.Controllers
         [Authorize]
         public IActionResult Checkout()
         {
+            ViewData["Locations"] = new SelectList(_context.Location, "LocationId", "DisplayName");
             return View();
         }
 
         // POST: /Shop/Checkout => create Order object and store as session var before payment
         [HttpPost]
         [Authorize]
-        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone")] Order order)
+        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone,LocationId")] Order order)
         {
             // 7 fields bound from form inputs in method header
             // now auto-fill 3 of the fields we removed from the form

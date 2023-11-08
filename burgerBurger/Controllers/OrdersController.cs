@@ -42,12 +42,16 @@ namespace burgerBurger.Controllers
 
             if (User.IsInRole("Administrator"))
             {
-                var order = await _context.Orders.Include(o => o.OrderDetails).ThenInclude(od => od.Item).FirstOrDefaultAsync(m => m.OrderId == id);
+                var order = await _context.Orders
+                    .Include(o => o.OrderDetails).ThenInclude(od => od.Item)
+                    .Include(i => i.Location)
+                    .FirstOrDefaultAsync(m => m.OrderId == id);
                 if (order == null)
                 {
                     return NotFound();
                 }
 
+                ViewData["location"] = _context.Location.Where(l => l.LocationId == order.LocationId).First().DisplayName;
                 return View(order);
             }
             else
@@ -59,6 +63,7 @@ namespace burgerBurger.Controllers
                     return RedirectToAction("Index");
                 }
 
+                ViewData["location"] = _context.Location.Where(l => l.LocationId == order.LocationId).First().DisplayName;
                 return View(order);
             }
         }
