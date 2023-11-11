@@ -5,9 +5,17 @@
 <h1>Shop our Store</h1>
 
 <section class="row card-group">
+    <div class="col-lg-6 mb-3">
+        <div class="card mb-4">
+            <div class="card-body text-center h-100">
+                <a asp-controller="" asp-action=""
+                   asp-route-itemType="" class="btn btn-secondary">Custom Burger</a>
+            </div>
+        </div>
+    </div>
     @foreach (var category in ViewBag.types)
     {
-        <div class="col-lg-4 mb-3">
+        <div class="col-lg-6 mb-3">
             <div class="card mb-4">
                 <div class="card-body text-center h-100">
                     <a asp-controller="Shop" asp-action="Category"

@@ -137,10 +137,13 @@ namespace burgerBurger.Controllers
         // POST: /Shop/Checkout => create Order object and store as session var before payment
         [HttpPost]
         [Authorize]
-        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone,LocationId")] Order order)
+        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone,LocationId,DeliveryDate")] Order order)
         {
             // 7 fields bound from form inputs in method header
             // now auto-fill 3 of the fields we removed from the form
+            if (order.DeliveryDate == DateTime.MinValue)
+                order.DeliveryDate = DateTime.Now;
+
             order.OrderDate = DateTime.Now;
             order.CustomerId = User.Identity.Name;
 

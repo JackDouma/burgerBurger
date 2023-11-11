@@ -41,6 +41,16 @@
                 <label asp-for="LocationId" class="control-label"></label>
                 <select asp-for="LocationId" class="form-control" asp-items="ViewBag.Locations"></select>
             </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input type="checkbox" id="scheduleCheck" class="form-check-input" onchange="showSchedule()" /> Schedule for Later?
+                </label>
+            </div>
+            <div id="delivery" class="form-group d-none">
+                <label asp-for="DeliveryDate" class="control-label"></label>
+                <input asp-for="DeliveryDate" class="form-control" />
+                <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Payment >>" class="btn btn-primary" />
             </div>

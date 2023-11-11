@@ -43,6 +43,9 @@ namespace burgerBurger.Models
         [MaxLength(100)]
         public string? PaymentCode { get; set; }
 
+        [Display(Name = "Delivery Date")]
+        public DateTime DeliveryDate { get; set; }
+
         // forgien key
         [Display(Name = "Location")]
         public int LocationId { get; set; }
