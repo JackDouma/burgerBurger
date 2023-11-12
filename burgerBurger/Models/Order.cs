@@ -7,6 +7,8 @@ namespace burgerBurger.Models
     {
         public int OrderId { get; set; }
 
+        public string? Status { get; set; }
+
         [Display(Name = "Order Date")]
         public DateTime OrderDate { get; set; }
 
