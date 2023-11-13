@@ -16,3 +16,12 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.thumb {
+    height: 100px;
+}
+
+.image {
+    padding: 20px;
+    height: 250px;
+}

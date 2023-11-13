@@ -27,14 +27,14 @@
                         <h3>@product.Name</h3>
                         <h5>@product.Description</h5>
                         <h5>@String.Format("{0:c}", product.Price)</h5>
-                        @* @if (!string.IsNullOrEmpty(product.Photo))
+                        @if (!string.IsNullOrEmpty(product.Photo))
                         {
-                        <img src="~/img/products/@product.Photo" alt="@product.Name Image" class="thumb" />
+                            <img src="~/img/staticItems/@product.Photo" alt="@product.Name Image" class="thumb" />
                         }
                         else
                         {
-                        <img src="~/img/products/placeholder.gif" alt="@product.Name Image" />
-                        } *@
+                            <img src="~/img/staticItems/placeholder.png" alt="@product.Name Image" class="thumb" />
+                        }
                         <div>
                             <a asp-action="AddToCart" asp-route-id="@product.Id">
                                 <button class="btn btn-primary m-3">Add To Cart</button>

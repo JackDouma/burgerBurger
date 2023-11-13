@@ -9,7 +9,7 @@
 <table class="table">
     <thead>
         <tr>
-            @* <th></th> *@
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Item.Name)
             </th>
@@ -26,16 +26,16 @@
         @foreach (var item in Model)
         {
             <tr>
-                @* <td>
-                    @if (item.Product.Photo != null)
+                <td>
+                    @if (item.Item.Photo != null)
                     {
-                        <img src="~/img/products/@item.Product.Photo" alt="@item.Product.Name Image" class="thumb" />
+                        <img src="~/img/staticItems/@item.Item.Photo" alt="@item.Item.Name Image" class="thumb" />
                     }
                     else
                     {
-                        <img src="~/img/products/placeholder.gif" alt="@item.Product.Name Image" class="thumb" />
+                        <img src="~/img/staticItems/placeholder.png" alt="@item.Item.Name Image" class="thumb" />
                     }
-                </td> *@
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Item.Name)
                 </td>

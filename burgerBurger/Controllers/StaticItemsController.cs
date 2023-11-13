@@ -63,8 +63,12 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients)
+        public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients, IFormFile? Photo)
         {
+
+            if (Photo != null)
+                staticItem.Photo = UploadPhoto(Photo);
+
             if (ModelState.IsValid)
             {
                 _context.Add(staticItem);
@@ -104,7 +108,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int> Ingredients)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int> Ingredients, IFormFile? Photo, string? CurrentPhoto)
         {
             if (id != staticItem.Id)
             {
@@ -115,6 +119,11 @@ namespace burgerBurger.Controllers
             {
                 try
                 {
+                    if (Photo != null)
+                        staticItem.Photo = UploadPhoto(Photo);
+                    else
+                        staticItem.Photo = CurrentPhoto;
+
                     _context.Update(staticItem);
                     await _context.SaveChangesAsync();
                     var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.Id);
@@ -188,6 +197,26 @@ namespace burgerBurger.Controllers
         private bool StaticItemExists(int id)
         {
             return (_context.StaticItem?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private static string UploadPhoto(IFormFile Photo)
+        {
+            // get temporary location of uploaded file
+            var filePath = Path.GetTempFileName();
+
+            // create unique name to prevent overwrites
+            // ie. photo.jpg => g6rjft7-photo.jpg
+            var fileName = Guid.NewGuid() + "-" + Photo.FileName;
+
+            // set destination path to wwwroot/img/staticItems
+            var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\img\\staticItems\\" + fileName;
+
+            using (var stream = new FileStream(uploadPath, FileMode.Create))
+            {
+                Photo.CopyTo(stream);
+            }
+
+            return fileName;
         }
     }
 }

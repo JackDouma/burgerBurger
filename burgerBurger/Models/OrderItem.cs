@@ -22,6 +22,8 @@ namespace burgerBurger.Models
 
         public List<Inventory>? Ingredients { get; set; }
 
+        public string? Photo { get; set; }
+
         public OrderItem()
         {
             Ingredients = new List<Inventory>();
