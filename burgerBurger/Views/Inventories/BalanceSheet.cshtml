@@ -6,16 +6,56 @@
     decimal equity = 0;
     decimal total = 0;
 
+    foreach (var order in ViewBag.Orders)
+    {
+        var typedOrder = (Order)order;
+        equity += typedOrder.OrderTotal;
+    }
+
     foreach (var item in Model)
     {
         liability += item.itemCost;
     }
+
     total = equity - liability;
 }
 
 <h1>Balance Sheet</h1>
 
+<h2>Equities</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Order Date
+            </th>
+            <th>
+                Order Total
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in ViewBag.Orders)
+        {
+            var typedOrder = (Order)order;
+            <tr>
+                <td>
+                    @typedOrder.OrderDate
+                </td>
+                <td>
+                    @typedOrder.OrderTotal
+                </td>
+            </tr>           
+        }   
+        <tr>
+            <td class="font-weight-bold">
+                @String.Format("Total Item Equities: {0:c}", equity)
+            </td>
+        </tr>
+    </tbody>
+</table>
 
+<h2>Liabilities</h2>
 <table class="table">
     <thead>
         <tr>
@@ -28,7 +68,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.itemDeliveryDate)
             </th>         
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -50,17 +89,13 @@
             <td class="font-weight-bold">
                 @String.Format("Total Item Liabilities: {0:c}", liability)
             </td>
-            <td class="font-weight-bold">
-                @String.Format("Total Order Equity: {0:c}", equity)
-            </td>
-            <td class="font-weight-bold">
-                @String.Format("Profit: {0:c}", total)
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" class="text-left">
-                <a asp-action="Index" asp-route-locationId="@ViewData["locationId"]" class="btn btn-primary">Back</a>
-            </td>
-        </tr>
+        </tr>   
     </tbody>
 </table>
+
+<h3>
+    @String.Format("Total Profit: {0:c}", total)
+</h3>
+<button class="btn btn-primary">
+    <a asp-action="Index" asp-route-locationId="@ViewData["locationId"]" class="btn btn-primary">Back</a>
+</button>

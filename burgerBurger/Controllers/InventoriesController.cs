@@ -82,6 +82,13 @@ namespace burgerBurger.Controllers
                 return NotFound();
             }
 
+
+            var orders = _context.Orders
+                .Where(o => o.LocationId == locationId)
+                .ToList();
+
+            ViewBag.Orders = orders;
+
             ViewData["locationId"] = locationId;
 
             var inventory = _context.Inventory
@@ -99,6 +106,7 @@ namespace burgerBurger.Controllers
             {
                 return NotFound();
             }
+
 
             ViewData["locationId"] = locationId;
 
