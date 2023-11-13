@@ -171,7 +171,7 @@ namespace burgerBurger.Controllers
 
                 _context.Add(inventory);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { locationId = inventory.LocationId });
             }
             ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "locationAddress", inventory.LocationId);
             return View(inventory);
