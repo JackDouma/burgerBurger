@@ -53,25 +53,41 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.quantity)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.calories)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.itemShelfLife)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.itemDeliveryDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.itemExpirey)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.itemExpireCheck)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a> |
-                    <a asp-action="ThrowOut" asp-route-id="@item.InventoryId">Throw Out</a>
-                </td>
+                @if (item.Category != burgerBurger.Enums.InventoryCategory.Package)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.calories)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.itemShelfLife)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.itemDeliveryDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.itemExpirey)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.itemExpireCheck)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a> |
+                        <a asp-action="ThrowOut" asp-route-id="@item.InventoryId">Throw Out</a>
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                    <td></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.itemDeliveryDate)
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a>
+                    </td>
+                }
             </tr>          
         }
         <tr>
