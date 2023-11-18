@@ -10,12 +10,10 @@ namespace burgerBurger.Models
         // variables
         public int InventoryId { get; set; }
 
-        [Required]
         [Display(Name = "Name")]
         [MaxLength(25)]
         public string? itemName { get; set; }
 
-        [Required]
         [Display(Name = "Description")]
         [MaxLength(100)]
         public string? itemDescription { get; set; }
@@ -29,7 +27,6 @@ namespace burgerBurger.Models
         [Range(0, 2000, ErrorMessage = "Calories must be between 0-2000")]
         public int calories { get; set; }
 
-        [Required]
         [Display(Name = "Item Cost")]
         [Column(TypeName = "decimal(10,2)")]
         [DisplayFormat(DataFormatString = "{0:c}")]
@@ -54,7 +51,6 @@ namespace burgerBurger.Models
         [Display(Name = "Thrown Out")]
         public Boolean itemThrowOutCheck { get; set; }
 
-        [Required]
         public InventoryCategory Category { get; set; }
         [Required]
         public Ingredient Ingredient { get; set; }
@@ -66,6 +62,7 @@ namespace burgerBurger.Models
         // parent ref
         public Location? Location { get; set; }
 
+        [Required]
         public int Outline {  get; set; }
 
         // set default values

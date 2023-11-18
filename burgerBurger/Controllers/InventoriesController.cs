@@ -151,7 +151,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Outline,Category,InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
+        public async Task<IActionResult> Create([Bind("Outline,InventoryId,quantity,itemDeliveryDate,LocationId")] Inventory inventory)
         {
             if (ModelState.IsValid)
             {
