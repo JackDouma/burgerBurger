@@ -1,27 +1,18 @@
-﻿@model burgerBurger.Models.Inventory
+﻿@model burgerBurger.Models.InventoryOutline
 @using burgerBurger.Enums
+
 @{
     ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
 
-<h4>Inventory</h4>
+<h4>InventoryOutline</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Outline" class="control-label"></label>
-                <select asp-for="Outline" class="form-control" asp-items="ViewBag.Ingredients"></select>
-                <span asp-validation-for="Outline" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<InventoryCategory>()"></select>
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="itemName" class="control-label"></label>
                 <input asp-for="itemName" class="form-control" />
@@ -31,11 +22,6 @@
                 <label asp-for="itemDescription" class="control-label"></label>
                 <input asp-for="itemDescription" class="form-control" />
                 <span asp-validation-for="itemDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="quantity" class="control-label"></label>
-                <input asp-for="quantity" class="form-control" />
-                <span asp-validation-for="quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="calories" class="control-label"></label>
@@ -53,19 +39,19 @@
                 <span asp-validation-for="itemShelfLife" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="itemDeliveryDate" class="control-label"></label>
-                <input asp-for="itemDeliveryDate" class="form-control" />
-                <span asp-validation-for="itemDeliveryDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LocationId" class="control-label"></label>
-                <select asp-for="LocationId" class ="form-control" asp-items="ViewBag.LocationId"></select>
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<InventoryCategory>()"></select>
+                <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

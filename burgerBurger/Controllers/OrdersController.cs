@@ -25,8 +25,10 @@ namespace burgerBurger.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
+            // if user is not an admin, show only their orders
             if (!User.IsInRole("Admin"))
                 return View(await _context.Orders.Where(o => o.CustomerId == User.Identity.Name).OrderByDescending(o => o.OrderId).ToListAsync());
+            // otherwise, show all orders
             else
                 return View(await _context.Orders.OrderByDescending(o => o.OrderId).ToListAsync());
 

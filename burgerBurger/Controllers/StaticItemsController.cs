@@ -40,6 +40,8 @@ namespace burgerBurger.Controllers
             var itemInventories = await _context.ItemInventory.Where(i => i.ItemId == id).ToListAsync();
             var inventories = await _context.Inventory.ToListAsync();
             List<string> ings = new List<string>();
+
+            // add ingredients to the staticItem object to be displayed
             foreach (var item in itemInventories)
                 staticItem.Ingredients.Add(inventories.First(i => i.InventoryId == item.IngredientId));
 
@@ -54,7 +56,8 @@ namespace burgerBurger.Controllers
         // GET: StaticItems/Create
         public IActionResult Create()
         {
-            ViewData["Ingredients"] = new MultiSelectList(_context.Inventory, "InventoryId", "itemName");
+            var inventory = _context.Inventory.OrderBy(i => i.Category).ToList();
+            ViewData["Ingredients"] = new MultiSelectList(inventory, "InventoryId", "itemName");
             return View();
         }
 
@@ -66,6 +69,7 @@ namespace burgerBurger.Controllers
         public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients, IFormFile? Photo)
         {
 
+            // add photo field to object
             if (Photo != null)
                 staticItem.Photo = UploadPhoto(Photo);
 
@@ -75,7 +79,9 @@ namespace burgerBurger.Controllers
                 await _context.SaveChangesAsync();
                 foreach (int i in Ingredients)
                 {
+                    // increment the total calories of the item by the calories value of each selected ingredient
                     staticItem.totalCalories += _context.Inventory.OrderBy(e => e.InventoryId).Where(e => e.InventoryId == i).Last().calories;
+                    // add a record of the relationship between the newly made item and the ingredient
                     _context.ItemInventory.Add(new ItemInventory(_context.StaticItem.OrderBy(i => i.Id).Last().Id, i));
                 }
                 await _context.SaveChangesAsync();
@@ -119,6 +125,7 @@ namespace burgerBurger.Controllers
             {
                 try
                 {
+                    // update photo if it was changed
                     if (Photo != null)
                         staticItem.Photo = UploadPhoto(Photo);
                     else
@@ -126,13 +133,18 @@ namespace burgerBurger.Controllers
 
                     _context.Update(staticItem);
                     await _context.SaveChangesAsync();
+
+                    // Remove all records in the ItemInventory that reference the deleted static item
                     var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.Id);
                     foreach (var item in cor)
                         _context.ItemInventory.Remove(item);
                     await _context.SaveChangesAsync();
+                    // do the same process as in the create method
                     foreach (int i in Ingredients)
                     {
+                        // increment the total calories of the item by the calories value of each selected ingredient
                         staticItem.totalCalories += _context.Inventory.OrderBy(e => e.InventoryId).Where(e => e.InventoryId == i).Last().calories;
+                        // add a record of the relationship between the newly made item and the ingredient
                         _context.ItemInventory.Add(new ItemInventory(id, i));
                     }
                     await _context.SaveChangesAsync();
@@ -185,6 +197,7 @@ namespace burgerBurger.Controllers
             if (staticItem != null)
             {
                 _context.StaticItem.Remove(staticItem);
+                // Remove all records in the ItemInventory that reference the deleted static item
                 var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.Id);
                 foreach (var item in cor)
                     _context.ItemInventory.Remove(item);

@@ -66,6 +66,8 @@ namespace burgerBurger.Models
         // parent ref
         public Location? Location { get; set; }
 
+        public int Outline {  get; set; }
+
         // set default values
         public Inventory()
         {

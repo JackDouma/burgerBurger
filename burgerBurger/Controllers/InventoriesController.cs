@@ -36,7 +36,7 @@ namespace burgerBurger.Controllers
             }
 
             ViewData["locationId"] = locationId;
-
+            
             var inventory = _context.Inventory
                 .Where(i => i.Location.LocationId == locationId)
                 .Where(i => i.itemThrowOutCheck == false)
@@ -141,6 +141,7 @@ namespace burgerBurger.Controllers
         // GET: Inventories/Create
         public IActionResult Create()
         {
+            ViewData["Ingredients"] = new SelectList(_context.InventoryOutline, "InventoryOutlineId", "itemName");
             ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "locationAddress");
             return View();
         }
@@ -150,10 +151,18 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Category,InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
+        public async Task<IActionResult> Create([Bind("Outline,Category,InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
         {
             if (ModelState.IsValid)
             {
+                InventoryOutline inventoryOutline = _context.InventoryOutline.Find(inventory.Outline);
+                inventory.itemName = inventoryOutline.itemName;
+                inventory.itemDescription = inventoryOutline.itemDescription;
+                inventory.calories = inventoryOutline.calories;
+                inventory.itemCost = inventoryOutline.itemCost;
+                inventory.itemShelfLife = inventoryOutline.itemShelfLife;
+                inventory.Category = inventoryOutline.Category;
+
                 // if package
                 if (inventory.Category == Enums.InventoryCategory.Package)
                 {
@@ -181,6 +190,7 @@ namespace burgerBurger.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", new { locationId = inventory.LocationId });
             }
+            ViewData["Ingredients"] = new SelectList(_context.InventoryOutline, "InventoryOutlineId", "itemName");
             ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "locationAddress", inventory.LocationId);
             return View(inventory);
         }
@@ -207,7 +217,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Category,InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
+        public async Task<IActionResult> Edit(int id, [Bind("Outline,Category,InventoryId,itemName,itemDescription,quantity,calories,itemCost,itemShelfLife,itemDeliveryDate,LocationId")] Inventory inventory)
         {
             if (id != inventory.InventoryId)
             {
@@ -218,6 +228,15 @@ namespace burgerBurger.Controllers
             {
                 try
                 {
+
+                    InventoryOutline inventoryOutline = _context.InventoryOutline.Find(inventory.Outline);
+                    inventory.itemName = inventoryOutline.itemName;
+                    inventory.itemDescription = inventoryOutline.itemDescription;
+                    inventory.calories = inventoryOutline.calories;
+                    inventory.itemCost = inventoryOutline.itemCost;
+                    inventory.itemShelfLife = inventoryOutline.itemShelfLife;
+                    inventory.Category = inventoryOutline.Category;
+
                     // if package
                     if (inventory.Category == Enums.InventoryCategory.Package)
                     {
