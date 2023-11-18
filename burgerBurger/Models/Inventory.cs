@@ -56,6 +56,8 @@ namespace burgerBurger.Models
 
         [Required]
         public InventoryCategory Category { get; set; }
+        [Required]
+        public Ingredient Ingredient { get; set; }
 
         // forgien key
         [Display(Name = "Location")]

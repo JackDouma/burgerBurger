@@ -13,6 +13,11 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Ingredient" class="control-label"></label>
+                <select asp-for="Ingredient" class="form-control" asp-items="Html.GetEnumSelectList<Ingredient>()"></select>
+                <span asp-validation-for="Ingredient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
                 <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<InventoryCategory>()"></select>
                 <span asp-validation-for="Category" class="text-danger"></span>

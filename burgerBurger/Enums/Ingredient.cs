@@ -1,0 +1,41 @@
+﻿namespace burgerBurger.Enums
+{
+    public enum Ingredient
+    {
+        Beef,
+        Chicken,
+        Vegetarian,
+        Tomato,
+        Onion,
+        Lettuce,
+        Pickles,
+        Bacon,
+        Egg,
+        Muchrooms,
+        Avocado,
+        Mozzarella_Cheese,
+        Cheddar_Cheese,
+        Ketchup,
+        Mustard,
+        Mayonnaise,
+        Relish,
+        Classic_Bun,
+        Sesame_Seed_Bun,
+        Brioche_Bun,
+        Potatoes,
+        Frying_Batter,
+        Cucumber,
+        Dressing,
+        Croutons,
+        Iced_Tea,
+        Root_Beer,
+        Water,
+        Pepsi,
+        Coke,
+        Sprite,
+        Burger_Wrap,
+        Fry_Container,
+        Salad_Bowl,
+        Plastic_Cup
+    }
+}
