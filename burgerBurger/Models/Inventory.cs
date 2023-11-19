@@ -68,7 +68,7 @@ namespace burgerBurger.Models
         // set default values
         public Inventory()
         {
-            quantity = 1;
+            quantity = 0;
             itemThrowOutCheck = false;
             itemDeliveryDate = DateTime.Now;
         }

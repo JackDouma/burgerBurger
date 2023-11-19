@@ -66,6 +66,23 @@ namespace burgerBurger.Controllers
                 location.DisplayName = location.LocationName + " - " + location.locationCity + " " + location.locationProvince + " " + location.locationAddress;
                 _context.Add(location);
                 await _context.SaveChangesAsync();
+
+                var items = _context.InventoryOutline.ToList();
+                foreach (var inventoryOutline in items)
+                {
+                    Inventory inventory = new Inventory();
+                    inventory.itemName = inventoryOutline.itemName;
+                    inventory.itemDescription = inventoryOutline.itemDescription;
+                    inventory.calories = inventoryOutline.calories;
+                    inventory.itemCost = inventoryOutline.itemCost;
+                    inventory.itemShelfLife = inventoryOutline.itemShelfLife;
+                    inventory.Category = inventoryOutline.Category;
+                    inventory.Outline = inventoryOutline.InventoryOutlineId;
+                    inventory.LocationId = location.LocationId;
+                    _context.Inventory.Add(inventory);
+                }
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(location);
@@ -154,6 +171,13 @@ namespace burgerBurger.Controllers
             if (location != null)
             {
                 _context.Location.Remove(location);
+
+                var inventories = _context.Inventory.Where(i => i.LocationId == id);
+
+                foreach (var inventory in inventories)
+                {
+                    _context.Inventory.Remove(inventory);
+                }
             }
             
             await _context.SaveChangesAsync();

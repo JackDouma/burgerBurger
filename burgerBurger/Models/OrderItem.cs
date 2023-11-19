@@ -20,13 +20,13 @@ namespace burgerBurger.Models
         [DisplayFormat(DataFormatString = "{0:c}")]
         public double Price { get; set; }
 
-        public List<Inventory>? Ingredients { get; set; }
+        public List<InventoryOutline>? Ingredients { get; set; }
 
         public string? Photo { get; set; }
 
         public OrderItem()
         {
-            Ingredients = new List<Inventory>();
+            Ingredients = new List<InventoryOutline>();
         }
     }
 }

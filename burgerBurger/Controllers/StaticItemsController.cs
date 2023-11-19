@@ -38,12 +38,12 @@ namespace burgerBurger.Controllers
             var staticItem = await _context.StaticItem
                 .FirstOrDefaultAsync(m => m.Id == id);
             var itemInventories = await _context.ItemInventory.Where(i => i.ItemId == id).ToListAsync();
-            var inventories = await _context.Inventory.ToListAsync();
+            var inventories = await _context.InventoryOutline.ToListAsync();
             List<string> ings = new List<string>();
 
             // add ingredients to the staticItem object to be displayed
             foreach (var item in itemInventories)
-                staticItem.Ingredients.Add(inventories.First(i => i.InventoryId == item.IngredientId));
+                staticItem.Ingredients.Add(inventories.First(i => i.InventoryOutlineId == item.IngredientId));
 
             if (staticItem == null)
             {
@@ -56,8 +56,8 @@ namespace burgerBurger.Controllers
         // GET: StaticItems/Create
         public IActionResult Create()
         {
-            var inventory = _context.Inventory.OrderBy(i => i.Category).ToList();
-            ViewData["Ingredients"] = new MultiSelectList(inventory, "InventoryId", "itemName");
+            var inventory = _context.InventoryOutline.OrderBy(i => i.Category).ToList();
+            ViewData["Ingredients"] = new MultiSelectList(inventory, "InventoryOutlineId", "itemName");
             return View();
         }
 
@@ -80,9 +80,9 @@ namespace burgerBurger.Controllers
                 foreach (int i in Ingredients)
                 {
                     // increment the total calories of the item by the calories value of each selected ingredient
-                    staticItem.totalCalories += _context.Inventory.OrderBy(e => e.InventoryId).Where(e => e.InventoryId == i).Last().calories;
+                    staticItem.totalCalories += _context.InventoryOutline.Find(i).calories;
                     // add a record of the relationship between the newly made item and the ingredient
-                    _context.ItemInventory.Add(new ItemInventory(_context.StaticItem.OrderBy(i => i.Id).Last().Id, i));
+                    _context.ItemInventory.Add(new ItemInventory(staticItem.Id, i));
                 }
                 await _context.SaveChangesAsync();
                 _context.StaticItem.Update(staticItem);
@@ -105,7 +105,7 @@ namespace burgerBurger.Controllers
             {
                 return NotFound();
             }
-            ViewData["Ingredients"] = new MultiSelectList(_context.Inventory, "InventoryId", "itemName");
+            ViewData["Ingredients"] = new MultiSelectList(_context.InventoryOutline, "InventoryOutlineId", "itemName");
             return View(staticItem);
         }
 
@@ -143,7 +143,7 @@ namespace burgerBurger.Controllers
                     foreach (int i in Ingredients)
                     {
                         // increment the total calories of the item by the calories value of each selected ingredient
-                        staticItem.totalCalories += _context.Inventory.OrderBy(e => e.InventoryId).Where(e => e.InventoryId == i).Last().calories;
+                        staticItem.totalCalories += _context.InventoryOutline.Find(i).calories;
                         // add a record of the relationship between the newly made item and the ingredient
                         _context.ItemInventory.Add(new ItemInventory(id, i));
                     }
