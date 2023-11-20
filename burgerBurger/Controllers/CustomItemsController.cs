@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using burgerBurger.Data;
 
-namespace burgerBurger
+namespace burgerBurger.Controllers
 {
     public class CustomItemsController : Controller
     {
@@ -21,9 +21,9 @@ namespace burgerBurger
         // GET: CustomItems
         public async Task<IActionResult> Index()
         {
-              return _context.CustomItem != null ? 
-                          View(await _context.CustomItem.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.CustomItem'  is null.");
+            return _context.CustomItem != null ?
+                        View(await _context.CustomItem.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.CustomItem'  is null.");
         }
 
         // GET: CustomItems/Details/5
@@ -55,7 +55,7 @@ namespace burgerBurger
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] CustomItem customItem)
+        public async Task<IActionResult> Create([Bind("Id,Name,totalCalories,Price,Photo")] CustomItem customItem)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace burgerBurger
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] CustomItem customItem)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,totalCalories,Price,Photo")] CustomItem customItem)
         {
             if (id != customItem.Id)
             {
@@ -149,14 +149,14 @@ namespace burgerBurger
             {
                 _context.CustomItem.Remove(customItem);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomItemExists(int id)
         {
-          return (_context.CustomItem?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.CustomItem?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

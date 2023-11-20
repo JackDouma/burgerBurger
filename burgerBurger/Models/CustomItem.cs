@@ -4,27 +4,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-public class CustomItem
+public class CustomItem : OrderItem
 {
-    [Key]
-    public int Id { get; set; }
-
-    [Required]
-    public string Name { get; set; }
-
-    public List<ItemInventory> Ingredients { get; set; } = new List<ItemInventory>();
-
-    public void AddInventoryItem(ItemInventory item)
+    public void AddInventoryItem(InventoryOutline item)
     {
         Ingredients.Add(item);
     }
 
-    public void RemoveInventoryItem(ItemInventory item)
+    public void RemoveInventoryItem(InventoryOutline item)
     {
         Ingredients.Remove(item);
     }
 
-    public List<ItemInventory> ListInventoryItems()
+    public List<InventoryOutline> ListInventoryItems()
     {
         return Ingredients;
     }
