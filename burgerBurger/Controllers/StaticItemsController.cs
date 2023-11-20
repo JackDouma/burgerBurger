@@ -56,8 +56,8 @@ namespace burgerBurger.Controllers
         // GET: StaticItems/Create
         public IActionResult Create()
         {
-            var inventory = _context.InventoryOutline.OrderBy(i => i.Category).ToList();
-            ViewData["Ingredients"] = new MultiSelectList(inventory, "InventoryOutlineId", "itemName");
+            //var inventory = _context.InventoryOutline.OrderBy(i => i.Category).ToList();
+            ViewData["Ingredients"] = _context.InventoryOutline.OrderBy(i => i.Category).ToList();
             return View();
         }
 
@@ -66,7 +66,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int>? Ingredients, IFormFile? Photo)
+        public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, string? Ingredients, IFormFile? Photo)
         {
 
             // add photo field to object
@@ -77,12 +77,17 @@ namespace burgerBurger.Controllers
             {
                 _context.Add(staticItem);
                 await _context.SaveChangesAsync();
-                foreach (int i in Ingredients)
+                foreach (string i in Ingredients.Split(" "))
                 {
-                    // increment the total calories of the item by the calories value of each selected ingredient
-                    staticItem.totalCalories += _context.InventoryOutline.Find(i).calories;
-                    // add a record of the relationship between the newly made item and the ingredient
-                    _context.ItemInventory.Add(new ItemInventory(staticItem.Id, i));
+                    if (!string.IsNullOrEmpty(i))
+                    {
+                        int ing = int.Parse(i);
+                        // increment the total calories of the item by the calories value of each selected ingredient
+                        staticItem.totalCalories += _context.InventoryOutline.Find(ing).calories;
+                        // add a record of the relationship between the newly made item and the ingredient
+                        _context.ItemInventory.Add(new ItemInventory(staticItem.Id, ing));
+                    }
+                    
                 }
                 await _context.SaveChangesAsync();
                 _context.StaticItem.Update(staticItem);
@@ -105,7 +110,9 @@ namespace burgerBurger.Controllers
             {
                 return NotFound();
             }
-            ViewData["Ingredients"] = new MultiSelectList(_context.InventoryOutline, "InventoryOutlineId", "itemName");
+            //ViewData["Ingredients"] = new MultiSelectList(_context.InventoryOutline, "InventoryOutlineId", "itemName");
+            ViewData["Ingredients"] = _context.InventoryOutline.OrderBy(i => i.Category).ToList();
+            ViewData["ItemIngredients"] = _context.ItemInventory.Where(i => i.ItemId == id).ToList();
             return View(staticItem);
         }
 
@@ -114,7 +121,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, List<int> Ingredients, IFormFile? Photo, string? CurrentPhoto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, string Ingredients, IFormFile? Photo, string? CurrentPhoto)
         {
             if (id != staticItem.Id)
             {
@@ -140,12 +147,16 @@ namespace burgerBurger.Controllers
                         _context.ItemInventory.Remove(item);
                     await _context.SaveChangesAsync();
                     // do the same process as in the create method
-                    foreach (int i in Ingredients)
+                    foreach (string i in Ingredients.Split(" "))
                     {
-                        // increment the total calories of the item by the calories value of each selected ingredient
-                        staticItem.totalCalories += _context.InventoryOutline.Find(i).calories;
-                        // add a record of the relationship between the newly made item and the ingredient
-                        _context.ItemInventory.Add(new ItemInventory(id, i));
+                        if (!string.IsNullOrEmpty(i))
+                        {
+                            int ing = int.Parse(i);
+                            // increment the total calories of the item by the calories value of each selected ingredient
+                            staticItem.totalCalories += _context.InventoryOutline.Find(ing).calories;
+                            // add a record of the relationship between the newly made item and the ingredient
+                            _context.ItemInventory.Add(new ItemInventory(id, ing));
+                        }
                     }
                     await _context.SaveChangesAsync();
                 }

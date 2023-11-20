@@ -33,11 +33,17 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Ingredients" class="control-label"></label>
-                <select asp-for="Ingredients" class="form-control" asp-items="ViewBag.Ingredients"></select>
-                <span asp-validation-for="Ingredients" class="text-danger"></span>
+            <div id="ingredients" class="form-group">
+                <label class="control-label">Ingredients</label>
+                <br />
+                @foreach (var ingredient in ViewBag.Ingredients)
+                {
+                    var ing = (InventoryOutline)ingredient;
+                    <input type="checkbox" id="@ing.InventoryOutlineId" name="ing" value="@ing.InventoryOutlineId" onchange="populateIngredients()" />
+                    <label for="@ing.InventoryOutlineId">@ing.itemName</label>
+                }
             </div>
+            <input type="hidden" asp-for="Ingredients" id="ingredientsInput" />
             <div class="form-group">
                 <label asp-for="Photo" class="control-label"></label>
                 <input asp-for="Photo" class="form-control" type="file" />
