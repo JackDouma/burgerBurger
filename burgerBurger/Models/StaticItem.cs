@@ -53,5 +53,7 @@ namespace burgerBurger.Models
         [Required]
         [MaxLength(255)]
         public string? Description { get; set; }
+
+        public bool IsSelling { get; set; }
     }
 }

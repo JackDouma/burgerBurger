@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using burgerBurger.Data;
+using burgerBurger.Models;
 
 namespace burgerBurger.Controllers
 {
@@ -47,6 +48,10 @@ namespace burgerBurger.Controllers
         // GET: CustomItems/Create
         public IActionResult Create()
         {
+            ViewData["Breads"] = _context.InventoryOutline.Where(i => i.Category == Enums.InventoryCategory.Bread).ToList();
+            ViewData["Meats"] = _context.InventoryOutline.Where(i => i.Category == Enums.InventoryCategory.Meat).ToList();
+            ViewData["Toppings"] = _context.InventoryOutline.Where(i => i.Category == Enums.InventoryCategory.Topping).ToList();
+            ViewData["Condiments"] = _context.InventoryOutline.Where(i => i.Category == Enums.InventoryCategory.Condiment).ToList(); 
             return View();
         }
 

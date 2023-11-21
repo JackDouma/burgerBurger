@@ -68,6 +68,7 @@ namespace burgerBurger.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, string? Ingredients, IFormFile? Photo)
         {
+            staticItem.IsSelling = true;
 
             // add photo field to object
             if (Photo != null)

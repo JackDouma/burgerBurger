@@ -4,23 +4,23 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-public class CustomItem : OrderItem
+namespace burgerBurger.Models
 {
-    public void AddInventoryItem(InventoryOutline item)
+    public class CustomItem : OrderItem
     {
-        Ingredients.Add(item);
-    }
+        public void AddInventoryItem(InventoryOutline item)
+        {
+            Ingredients.Add(item);
+        }
 
-    public void RemoveInventoryItem(InventoryOutline item)
-    {
-        Ingredients.Remove(item);
-    }
+        public void RemoveInventoryItem(InventoryOutline item)
+        {
+            Ingredients.Remove(item);
+        }
 
-    public List<InventoryOutline> ListInventoryItems()
-    {
-        return Ingredients;
+        public List<InventoryOutline> ListInventoryItems()
+        {
+            return Ingredients;
+        }
     }
 }
-
-
-
