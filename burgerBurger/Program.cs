@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
         // changed to false because we don't want required email confirmation
-        builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+        builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -63,6 +63,7 @@ using Microsoft.EntityFrameworkCore;
             }
         }
 
+        /*
         using (var scope = app.Services.CreateScope())
         {
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
@@ -84,6 +85,7 @@ using Microsoft.EntityFrameworkCore;
                 await userManager.AddToRoleAsync(user, "Admin");
             }
         }
+        */
 
         /*
          * Authorization is at class or method level
