@@ -9,11 +9,21 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<iframe width="110" height="200" src="https://www.myinstants.com/instant/vine-boom-sound-70972/embed/" frameborder="0" scrolling="no"></iframe>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.totalCalories)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo)
             </th>
             <th></th>
         </tr>
@@ -23,6 +33,15 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.totalCalories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Photo)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

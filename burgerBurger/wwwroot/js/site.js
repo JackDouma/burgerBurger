@@ -24,3 +24,25 @@ function populateIngredients() {
     }
     document.getElementById("ingredientsInput").value = ingredients;
 }
+
+function showMeat() {
+    document.getElementById('meat').className = "";
+}
+
+function showOtherIngredients() {
+    document.getElementById('toppings').className = "";
+    document.getElementById('condiments').className = "";
+}
+
+function populateIngredientsCustom() {
+    var checkboxes = document.getElementById("ingredients");
+    var ingredients = String();
+    for (const child of checkboxes.children) {
+        for (const secondChild of child.children) {
+            if (secondChild.checked) {
+                ingredients += (secondChild.value + " ");
+            }
+        }
+    }
+    document.getElementById("ingredientsInput").value = ingredients;
+}
