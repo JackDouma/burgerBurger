@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using burgerBurger.Data;
 
@@ -11,9 +12,10 @@ using burgerBurger.Data;
 namespace burgerBurger.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231121204541_giftcard")]
+    partial class giftcard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,8 +152,8 @@ namespace burgerBurger.Data.Migrations
                     b.Property<decimal>("amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("code")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("code")
+                        .HasColumnType("int");
 
                     b.Property<bool>("redeemed")
                         .HasColumnType("bit");
