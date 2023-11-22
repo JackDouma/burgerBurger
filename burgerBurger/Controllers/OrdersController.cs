@@ -30,8 +30,10 @@ namespace burgerBurger.Controllers
             var allOrders = _context.Orders.OrderByDescending(o => o.OrderId);
             if (User.IsInRole("Customer"))
                 return View(await allOrders.Where(o => o.CustomerId == User.Identity.Name).ToListAsync());
-            /*else if (User.IsInRole("Manager"))
-                return View(await allOrders.Where(o => o.LocationId == User.).ToListAsync());*/
+            else if (User.IsInRole("Manager")) {
+                var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                return View(await allOrders.Where(o => o.LocationId == location).ToListAsync());
+            }
             else
                 return View(await _context.Orders.OrderByDescending(o => o.OrderId).ToListAsync());
 
@@ -56,7 +58,7 @@ namespace burgerBurger.Controllers
                     return NotFound();
                 }
 
-                ViewData["location"] = _context.Location.Where(l => l.LocationId == order.LocationId).First().DisplayName;
+                ViewData["location"] = _context.Location.FirstOrDefaultAsync(l => l.LocationId == order.LocationId).Result.DisplayName;
                 return View(order);
             }
             else
@@ -68,7 +70,7 @@ namespace burgerBurger.Controllers
                     return RedirectToAction("Index");
                 }
 
-                ViewData["location"] = _context.Location.Where(l => l.LocationId == order.LocationId).First().DisplayName;
+                ViewData["location"] = _context.Location.FirstOrDefaultAsync(l => l.LocationId == order.LocationId).Result.DisplayName;
                 return View(order);
             }
         }
