@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using burgerBurger.Data;
 using burgerBurger.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace burgerBurger.Controllers
 {
+    [Authorize(Roles = "Admin,Owner")]
     public class LocationsController : Controller
     {
         private readonly ApplicationDbContext _context;

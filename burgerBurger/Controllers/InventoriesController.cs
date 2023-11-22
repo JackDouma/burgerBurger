@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using burgerBurger.Data;
 using burgerBurger.Models;
 using System.Composition;
+using Microsoft.AspNetCore.Authorization;
 
 namespace burgerBurger.Controllers
 {
+    [Authorize(Roles = "Admin,Manager,Owner")]
     public class InventoriesController : Controller
     {
         private readonly ApplicationDbContext _context;

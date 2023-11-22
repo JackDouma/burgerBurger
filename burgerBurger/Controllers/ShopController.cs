@@ -1,6 +1,5 @@
 ﻿using burgerBurger.Data;
 using burgerBurger.Models;
-using burgerBurger.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -144,7 +143,7 @@ namespace burgerBurger.Controllers
             if (order.DeliveryDate == DateTime.MinValue)
             {
                 order.DeliveryDate = DateTime.Now;
-                order.Status = "On Its Way";
+                order.Status = "Pending";
             }
             else
             {

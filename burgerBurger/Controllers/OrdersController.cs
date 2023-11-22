@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using burgerBurger.Data;
 using burgerBurger.Models;
 using Microsoft.AspNetCore.Authorization;
-using burgerBurger.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace burgerBurger.Controllers
 {
@@ -25,10 +25,13 @@ namespace burgerBurger.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
+            //var userManager = scope.service
             // if user is not an admin, show only their orders
-            if (!User.IsInRole("Admin"))
-                return View(await _context.Orders.Where(o => o.CustomerId == User.Identity.Name).OrderByDescending(o => o.OrderId).ToListAsync());
-            // otherwise, show all orders
+            var allOrders = _context.Orders.OrderByDescending(o => o.OrderId);
+            if (User.IsInRole("Customer"))
+                return View(await allOrders.Where(o => o.CustomerId == User.Identity.Name).ToListAsync());
+            /*else if (User.IsInRole("Manager"))
+                return View(await allOrders.Where(o => o.LocationId == User.).ToListAsync());*/
             else
                 return View(await _context.Orders.OrderByDescending(o => o.OrderId).ToListAsync());
 
