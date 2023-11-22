@@ -2,11 +2,38 @@
 
 @{
     ViewData["Title"] = "Giftcards";
+    string result = Context.Request.Query["result"];
+}
+
+@if (result == "success")
+{
+    <div class="alert alert-success">
+        <p>Giftcard successfully redeemed!</p>
+    </div>
+}
+@if (result == "invalidCode")
+{
+    <div class="alert alert-danger">
+        <p>Code is invalid.</p>
+    </div>
+}
+@if (result == "invalidUser")
+{
+    <div class="alert alert-danger">
+        <p>Please login or create an account.</p>
+    </div>
+}
+@if (result == "error")
+{
+    <div class="alert alert-danger">
+        <p>Error.</p>
+    </div>
 }
 
 <h1>Giftcards</h1>
 <p><a asp-action="Create">Buy Giftcard</a></p>
 <p><a asp-action="Redeem">Redeem Giftcard</a></p>
+
 <table class="table">
     <thead>
         <tr>

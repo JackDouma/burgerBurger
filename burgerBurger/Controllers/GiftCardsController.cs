@@ -9,6 +9,8 @@ using burgerBurger.Data;
 using burgerBurger.Models;
 using System.Text;
 using System.Security.Cryptography;
+using Microsoft.CodeAnalysis.Completion;
+using Microsoft.AspNetCore.Identity;
 
 namespace burgerBurger.Controllers
 {
@@ -33,6 +35,52 @@ namespace burgerBurger.Controllers
         public IActionResult Redeem()
         {
             return View();
+        }
+
+        // POST: GiftCards/Redeem
+        [HttpPost]
+        public async Task<IActionResult> Redeem(string enteredCode)
+        {
+            if (ModelState.IsValid)
+            {
+                // hash code
+                string hashEnteredCode = HashCode(enteredCode);
+
+                // compare entered code to all active codes
+                var giftCard = await _context.GiftCards.FirstOrDefaultAsync(gc => gc.code == hashEnteredCode);
+
+                // valid code
+                if (giftCard != null && giftCard.redeemed == false)
+                {
+                    // get logged in user
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+                    // if user is logged in
+                    if (user != null)
+                    {
+                        user.balance += giftCard.amount;
+                        giftCard.redeemed = true;
+
+                        _context.Users.Update(user);
+                        _context.GiftCards.Update(giftCard);
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction("Index", new { result = "success" });
+                    }
+                    // if user is not logged in
+                    else
+                    {
+                        return RedirectToAction("Index", new { result = "invalidUser" });
+                    }
+                }
+                // invalid code
+                else
+                {
+                    return RedirectToAction("Index", new { result = "invalidCode" });
+                }
+
+            }
+            return RedirectToAction("Index", new { result = "error" });
         }
 
         // GET: GiftCards/Create
@@ -73,7 +121,7 @@ namespace burgerBurger.Controllers
 
         private bool GiftCardExists(int id)
         {
-          return (_context.GiftCards?.Any(e => e.GiftCardId == id)).GetValueOrDefault();
+             return (_context.GiftCards?.Any(e => e.GiftCardId == id)).GetValueOrDefault();
         }
 
         /**
