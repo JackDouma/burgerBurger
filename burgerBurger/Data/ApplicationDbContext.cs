@@ -61,5 +61,6 @@ namespace burgerBurger.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<InventoryOutline> InventoryOutline { get; set; }
         public DbSet<CustomItem>? CustomItem { get; set; }
+        public DbSet<GiftCard> GiftCards { get; set; }
     }
 }
