@@ -8,6 +8,8 @@ namespace burgerBurger.Models
 {
     public class CustomItem : OrderItem
     {
+        public int CustomerId { get; set; }
+
         public void AddInventoryItem(InventoryOutline item)
         {
             Ingredients.Add(item);

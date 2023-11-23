@@ -43,6 +43,7 @@ namespace burgerBurger.Models
         public string? CustomerId { get; set; }
 
         [MaxLength(100)]
+        [Display(Name = "Payment Code")]
         public string? PaymentCode { get; set; }
 
         [Display(Name = "Delivery Date")]

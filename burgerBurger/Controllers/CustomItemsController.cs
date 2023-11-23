@@ -61,15 +61,36 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,totalCalories,Price,Photo")] CustomItem customItem)
+        public async Task<IActionResult> Create(string? Ingredients)
         {
+            var customBurger = new CustomItem();
+            customBurger.Name = "Custom Burger with ";
+            customBurger.Price = 6.99;
+            customBurger.Photo = "placeholder.png";
+
             if (ModelState.IsValid)
             {
-                _context.Add(customItem);
+                _context.Add(customBurger);
+                await _context.SaveChangesAsync();
+                foreach (string i in Ingredients.Split(" "))
+                {
+                    if (!string.IsNullOrEmpty(i))
+                    {
+                        int ing = int.Parse(i);
+                        // increment the total calories of the item by the calories value of each selected ingredient
+                        customBurger.totalCalories += _context.InventoryOutline.Find(ing).calories;
+                        customBurger.Name += (_context.InventoryOutline.Find(ing).itemName + ", ");
+                        // add a record of the relationship between the newly made item and the ingredient
+                        _context.ItemInventory.Add(new ItemInventory(customBurger.Id, ing));
+                    }
+                }
+                customBurger.Name = customBurger.Name.Substring(0, customBurger.Name.Length - 2);
+                await _context.SaveChangesAsync();
+                _context.CustomItem.Update(customBurger);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(customItem);
+            return View(customBurger);
         }
 
         // GET: CustomItems/Edit/5

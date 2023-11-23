@@ -11,6 +11,7 @@ using System.Text;
 using System.Security.Cryptography;
 using Microsoft.CodeAnalysis.Completion;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace burgerBurger.Controllers
 {
@@ -24,6 +25,7 @@ namespace burgerBurger.Controllers
         }
 
         // GET: GiftCards
+        [Authorize (Roles = "Admin,Owner")]
         public async Task<IActionResult> Index()
         {
               return _context.GiftCards != null ? 

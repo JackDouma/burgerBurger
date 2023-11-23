@@ -51,7 +51,7 @@ namespace burgerBurger.Controllers
         // GET: /products/AddToCart/401 => id param represents selected ProductId
         public IActionResult AddToCart(int id)
         {
-            var product = _context.StaticItem.Find(id);
+            var product = _context.OrderItem.Find(id);
 
             // check if this cart already contains this product
             var cartItem = _context.CartItems.SingleOrDefault(c => c.ItemId == id && c.CustomerId == GetCustomerId());
