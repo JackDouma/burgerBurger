@@ -245,5 +245,45 @@ namespace burgerBurger.Controllers
 
             return fileName;
         }
+
+        public async Task<IActionResult> RemoveFromStorefront(int? id)
+        {
+            if (id == null || _context.StaticItem == null)
+            {
+                return NotFound();
+            }
+
+            var staticItem = await _context.StaticItem
+                .FindAsync(id);
+
+            if (staticItem != null)
+            {
+                staticItem.IsSelling = false;
+                _context.Update(staticItem);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> AddBackToStorefront(int? id)
+        {
+            if (id == null || _context.StaticItem == null)
+            {
+                return NotFound();
+            }
+
+            var staticItem = await _context.StaticItem
+                .FindAsync(id);
+
+            if (staticItem != null)
+            {
+                staticItem.IsSelling = true;
+                _context.Update(staticItem);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

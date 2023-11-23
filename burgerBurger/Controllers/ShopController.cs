@@ -39,6 +39,7 @@ namespace burgerBurger.Controllers
                 // fetch products for display
                 var products = _context.StaticItem
                     .Where(p => p.Type == itemType)
+                    .Where(i => i.IsSelling)
                     .OrderBy(p => p.Name)
                     .ToList();
 

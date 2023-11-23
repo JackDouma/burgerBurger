@@ -64,8 +64,16 @@
             <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    @if (item.IsSelling)
+                    {
+                        <a asp-action="RemoveFromStorefront" asp-route-id="@item.Id">Take Off Storefront</a>
+                    }
+                    else
+                    {
+                        <a asp-action="AddBackToStorefront" asp-route-id="@item.Id">Add Back To Storefront</a>
+                    }
+                </td>
         </tr>
 }
     </tbody>
