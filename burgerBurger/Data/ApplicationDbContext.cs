@@ -1,9 +1,28 @@
 ﻿using burgerBurger.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace burgerBurger.Data
 {
+    public class TimeOnlyConverter : ValueConverter<TimeOnly, TimeSpan>
+    {
+        public TimeOnlyConverter()
+            : base(timeOnly =>
+                    timeOnly.ToTimeSpan(),
+                timeSpan => TimeOnly.FromTimeSpan(timeSpan))
+        { }
+    }
+
+    public class TimeOnlyComparer : ValueComparer<TimeOnly>
+    {
+        public TimeOnlyComparer() : base(
+            (x, y) => x.Ticks == y.Ticks,
+            timeOnly => timeOnly.GetHashCode())
+        { }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -50,6 +69,13 @@ namespace burgerBurger.Data
                 .IsRequired(false); 
         }
 
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Properties<TimeOnly>()
+                .HaveConversion<TimeOnlyConverter, TimeOnlyComparer>();
+
+            base.ConfigureConventions(configurationBuilder);
+        }
 
         public DbSet<Location> Location { get; set; }
         public DbSet<Inventory> Inventory { get; set; }

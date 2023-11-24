@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using burgerBurger.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 
 namespace burgerBurger.Controllers
 {
@@ -130,7 +131,9 @@ namespace burgerBurger.Controllers
         [Authorize]
         public IActionResult Checkout()
         {
-            ViewData["Locations"] = new SelectList(_context.Location, "LocationId", "DisplayName");
+            var now = TimeOnly.FromDateTime(DateTime.Now);
+            var locations = _context.Location.AsEnumerable().Where(l => l.OpeningTime.Value.Ticks < now.Ticks).Where(l => l.ClosingTime.Value.Ticks > now.Ticks);
+            ViewData["Locations"] = new SelectList(locations, "LocationId", "DisplayName");
             return View();
         }
 
@@ -151,7 +154,16 @@ namespace burgerBurger.Controllers
                 order.Status = "To Be Delivered";
             }
 
-            
+            var location = _context.Location.FindAsync(order.LocationId).Result.ClosingTime.Value.Ticks;
+            if (TimeOnly.FromDateTime(DateTime.Now).Ticks > location)
+            {
+                var now = TimeOnly.FromDateTime(DateTime.Now);
+                var locations = _context.Location.AsEnumerable().Where(l => l.OpeningTime.Value.Ticks < now.Ticks).Where(l => l.ClosingTime.Value.Ticks > now.Ticks);
+                ViewData["Locations"] = new SelectList(locations, "LocationId", "DisplayName");
+                ViewData["error"] = "This location is currently closed. Please select another.";
+                return View(order);
+            }
+            ViewData["error"] = null;
 
             order.OrderDate = DateTime.Now;
             order.CustomerId = User.Identity.Name;

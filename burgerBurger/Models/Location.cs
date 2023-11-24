@@ -31,5 +31,11 @@ namespace burgerBurger.Models
         public List<Inventory>? Inventories { get; set; }
 
         public string? DisplayName { get; set; }
+
+        [Display(Name = "Opening Time")]
+        public TimeOnly? OpeningTime { get; set; }
+
+        [Display(Name = "Closing Time")]
+        public TimeOnly? ClosingTime { get; set; }
     }
 }

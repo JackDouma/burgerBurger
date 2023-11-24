@@ -41,6 +41,10 @@
                 <label asp-for="LocationId" class="control-label"></label>
                 <select asp-for="LocationId" class="form-control" asp-items="ViewBag.Locations"></select>
             </div>
+            @if(ViewBag.error != null)
+            {
+                <span class="text-danger field-validation-error">@ViewBag.error</span>
+            }
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input type="checkbox" id="scheduleCheck" class="form-check-input" onchange="showSchedule()" /> Schedule for Later?

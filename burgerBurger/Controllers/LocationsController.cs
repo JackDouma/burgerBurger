@@ -60,8 +60,10 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationId,LocationName,locationCity,locationProvince,locationAddress")] Location location)
+        public async Task<IActionResult> Create([Bind("LocationId,LocationName,locationCity,locationProvince,locationAddress")] Location location, string OpeningTime, string ClosingTime)
         {
+            location.OpeningTime = TimeOnly.Parse(OpeningTime);
+            location.ClosingTime = TimeOnly.Parse(ClosingTime);
             if (ModelState.IsValid)
             {
                 // set the display name to the name of the location, followed by the full address
@@ -103,6 +105,11 @@ namespace burgerBurger.Controllers
             {
                 return NotFound();
             }
+            ViewData["Opening"] = (location.OpeningTime.Value.Hour < 10 ? "0" + location.OpeningTime.Value.Hour : location.OpeningTime.Value.Hour) + ":" +
+                (location.OpeningTime.Value.Minute < 10 ? "0" + location.OpeningTime.Value.Minute : location.OpeningTime.Value.Minute) + ":00";
+            ViewData["Closing"] = (location.ClosingTime.Value.Hour < 10 ? ("0" + location.ClosingTime.Value.Hour) : location.ClosingTime.Value.Hour) + ":" +
+                (location.ClosingTime.Value.Minute < 10 ? ("0" + location.ClosingTime.Value.Minute) : location.ClosingTime.Value.Minute) + ":00";
+
             return View(location);
         }
 
@@ -111,7 +118,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationId,LocationName,locationCity,locationProvince,locationAddress")] Location location)
+        public async Task<IActionResult> Edit(int id, [Bind("LocationId,LocationName,locationCity,locationProvince,locationAddress")] Location location, string OpeningTime, string ClosingTime)
         {
             if (id != location.LocationId)
             {
@@ -122,6 +129,8 @@ namespace burgerBurger.Controllers
             {
                 try
                 {
+                    location.OpeningTime = TimeOnly.Parse(OpeningTime);
+                    location.ClosingTime = TimeOnly.Parse(ClosingTime);
                     location.DisplayName = location.LocationName + " - " + location.locationCity + " " + location.locationProvince + " " + location.locationAddress;
                     _context.Update(location);
                     await _context.SaveChangesAsync();
