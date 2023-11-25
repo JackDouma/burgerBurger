@@ -35,11 +35,15 @@
                         {
                             <img src="~/img/staticItems/placeholder.png" alt="@product.Name Image" class="thumb" />
                         }
-                        <div>
-                            <a asp-action="AddToCart" asp-route-id="@product.Id">
-                                <button class="btn btn-primary m-3">Add To Cart</button>
-                            </a>
-                        </div>
+                        <form method="post" action="AddToCart" style="display: flex;align-items: center;justify-content: center;">
+                            @Html.AntiForgeryToken()
+                            <fieldset>
+                                <label for="Quantity">Quantity: </label>
+                                <input name="Quantity" required type="number" min="1" max="999" class="small-input" />
+                            </fieldset>
+                            <input name="ItemId" type="hidden" value="@product.Id" />
+                            <button class="btn btn-primary m-3">Add to Cart</button>
+                        </form>
                     </div>
                 </div>
             </div>

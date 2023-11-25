@@ -7,6 +7,8 @@ using System.Configuration;
 using burgerBurger.Enums;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
+using Stripe;
+using Stripe.Checkout;
 
 namespace burgerBurger.Controllers
 {
@@ -50,21 +52,21 @@ namespace burgerBurger.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: /products/AddToCart/401 => id param represents selected ProductId
-        public IActionResult AddToCart(int id)
+        // GET: /products/AddToCart/
+        public IActionResult AddToCart(int ItemId, int Quantity)
         {
-            var product = _context.OrderItem.Find(id);
+            var product = _context.OrderItem.Find(ItemId);
 
             // check if this cart already contains this product
-            var cartItem = _context.CartItems.SingleOrDefault(c => c.ItemId == id && c.CustomerId == GetCustomerId());
+            var cartItem = _context.CartItems.SingleOrDefault(c => c.ItemId == ItemId && c.CustomerId == GetCustomerId());
 
             if (cartItem == null)
             {
                 // create new CartItem and populate the fields
                 cartItem = new CartItem
                 {
-                    ItemId = id,
-                    Quantity = 1,
+                    ItemId = ItemId,
+                    Quantity = Quantity,
                     Price = (decimal)product.Price,
                     CustomerId = GetCustomerId()
                 };
@@ -73,8 +75,7 @@ namespace burgerBurger.Controllers
             }
             else
             {
-                cartItem.Quantity += 1;
-                cartItem.Price += (decimal)product.Price;
+                cartItem.Quantity += Quantity;
                 _context.Update(cartItem);
             }
 
@@ -176,13 +177,13 @@ namespace burgerBurger.Controllers
             HttpContext.Session.SetObject("Order", order);
 
             // redirect to payment
-            // return RedirectToAction("Payment");
+            return RedirectToAction("Payment");
 
             // redirect to SaveOrder since stripe is not set up yet
-            return RedirectToAction("SaveOrder");
+            //return RedirectToAction("SaveOrder");
         }
 
-        /*// GET: /Shop/Payment => invoke Stripe payment session which displays their payment form
+        // GET: /Shop/Payment => invoke Stripe payment session which displays their payment form
         [Authorize]
         public IActionResult Payment()
         {
@@ -190,7 +191,7 @@ namespace burgerBurger.Controllers
             var order = HttpContext.Session.GetObject<Order>("Order");
 
             // get the api key from the site config
-            StripeConfiguration.ApiKey = _configuration.GetValue<string>("Stripe:SecretKey");
+            StripeConfiguration.ApiKey = _configuration.GetValue<string>("StripeSecretKey");
 
             // stripe invocation from https://stripe.com/docs/checkout/quickstart?client=html
             var options = new SessionCreateOptions
@@ -220,7 +221,7 @@ namespace burgerBurger.Controllers
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
-        }*/
+        }
 
         // GET: /Shop/SaveOrder => create Order in DB, add OrderDetails, clear cart
         [Authorize]
@@ -259,10 +260,8 @@ namespace burgerBurger.Controllers
             }
             _context.SaveChanges();
 
-            // clear session vars
-            HttpContext.Session.SetInt32("ItemCount", 0);
-            HttpContext.Session.SetString("CustomerId", "");
-            HttpContext.Session.SetObject("Order", null);
+            // clear session variables
+            HttpContext.Session.Clear();
 
             // redirect to Order Confirmation
             return RedirectToAction("Details", "Orders", new { @id = order.OrderId });

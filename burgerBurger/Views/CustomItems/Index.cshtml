@@ -26,6 +26,7 @@
                 @Html.DisplayNameFor(model => model.Photo)
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -46,8 +47,18 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-controller="Shop" asp-action="AddToCart" asp-route-id="@item.Id">Add To Cart</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+            <td>
+                    <form method="post" asp-controller="Shop" asp-action="AddToCart" style="display: flex;align-items: center;justify-content: center;">
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <label for="Quantity">Quantity: </label>
+                            <input name="Quantity" required type="number" min="1" max="999" class="small-input" />
+                        </fieldset>
+                        <input name="ItemId" type="hidden" value="@item.Id" />
+                        <button class="btn btn-primary m-3">Add to Cart</button>
+                    </form>
             </td>
         </tr>
 }
