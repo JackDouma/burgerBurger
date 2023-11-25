@@ -10,5 +10,6 @@ namespace burgerBurger.Data
         public string? city { get; set; }
         public string? province { get; set; }
         public string? country { get; set; }
+        public string? postalCode { get; set; }
     }
 }

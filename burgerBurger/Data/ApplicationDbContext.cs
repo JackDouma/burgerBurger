@@ -67,6 +67,11 @@ namespace burgerBurger.Data
                 .Property(e => e.country)
                 .HasMaxLength(100) 
                 .IsRequired(false); 
+
+            modelBuilder.Entity<ApplicationUser>()
+                .Property(e => e.postalCode)
+                .HasMaxLength(7)
+                .IsRequired(false);
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

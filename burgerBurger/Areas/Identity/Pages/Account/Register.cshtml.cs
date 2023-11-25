@@ -97,6 +97,15 @@ namespace burgerBurger.Areas.Identity.Pages.Account
             [Display(Name = "Country")]
             public string Country { get; set; }
 
+            [Required]
+            [Display(Name = "Phone Number")]
+            [DataType(DataType.PhoneNumber)]
+            public string PhoneNumber { get; set; }
+
+            [Required]
+            [Display(Name = "Postal Code")]
+            [DataType(DataType.PostalCode)]
+            public string PostalCode { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -135,6 +144,7 @@ namespace burgerBurger.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.PhoneNumber = Input.PhoneNumber;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -184,6 +194,7 @@ namespace burgerBurger.Areas.Identity.Pages.Account
                 user.city = Input.City;
                 user.province = Input.Province;
                 user.country = Input.Country;
+                user.postalCode = Input.PostalCode;
 
                 return user;
             }
