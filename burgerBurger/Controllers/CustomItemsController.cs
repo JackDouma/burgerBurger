@@ -14,10 +14,12 @@ namespace burgerBurger.Controllers
     public class CustomItemsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public CustomItemsController(ApplicationDbContext context)
+        public CustomItemsController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: CustomItems
@@ -65,7 +67,7 @@ namespace burgerBurger.Controllers
         {
             var customBurger = new CustomItem();
             customBurger.Name = "Custom Burger with ";
-            customBurger.Price = 6.99;
+            customBurger.Price = _configuration.GetValue<double>("CustomBurgerPrice");
             customBurger.Photo = "placeholder.png";
 
             if (ModelState.IsValid)
