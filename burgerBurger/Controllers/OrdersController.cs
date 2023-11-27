@@ -27,12 +27,11 @@ namespace burgerBurger.Controllers
         {
             //var userManager = scope.service
             // if user is not an admin, show only their orders
-            var allOrders = _context.Orders.OrderByDescending(o => o.OrderId);
             if (User.IsInRole("Customer"))
-                return View(await allOrders.Where(o => o.CustomerId == User.Identity.Name).ToListAsync());
+                return View(await _context.Orders.Where(o => o.CustomerId == User.Identity.Name).OrderBy(o => o.OrderId).ToListAsync());
             else if (User.IsInRole("Manager")) {
                 var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
-                return View(await allOrders.Where(o => o.LocationId == location).ToListAsync());
+                return View(await _context.Orders.Where(o => o.LocationId == location).ToListAsync());
             }
             else
                 return View(await _context.Orders.OrderByDescending(o => o.OrderId).ToListAsync());
