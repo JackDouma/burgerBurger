@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace burgerBurger.Controllers
 {
+    [Authorize]
     public class CustomItemsController : Controller
     {
         private readonly ApplicationDbContext _context;
