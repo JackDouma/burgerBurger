@@ -135,13 +135,14 @@ namespace burgerBurger.Controllers
             var now = TimeOnly.FromDateTime(DateTime.Now);
             var locations = _context.Location.AsEnumerable().Where(l => l.OpeningTime.Value.Ticks < now.Ticks).Where(l => l.ClosingTime.Value.Ticks > now.Ticks);
             ViewData["Locations"] = new SelectList(locations, "LocationId", "DisplayName");
+            ViewData["balance"] = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.balance;
             return View();
         }
 
         // POST: /Shop/Checkout => create Order object and store as session var before payment
         [HttpPost]
         [Authorize]
-        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone,LocationId,DeliveryDate")] Order order)
+        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone,LocationId,DeliveryDate,UsedBalance")] Order order)
         {
             // 7 fields bound from form inputs in method header
             // now auto-fill 3 of the fields we removed from the form
@@ -177,6 +178,38 @@ namespace burgerBurger.Controllers
             HttpContext.Session.SetObject("Order", order);
 
             // redirect to payment
+            var user = _context.Users.FirstOrDefault(u => u.UserName == order.CustomerId);
+            if (user.balance > order.OrderTotal)
+            {
+                return RedirectToAction("UseBalance");
+            }
+            return RedirectToAction("Payment");
+        }
+
+        [Authorize]
+        public IActionResult UseBalance()
+        {
+            ViewData["balance"] = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).balance;
+            ViewData["total"] = HttpContext.Session.GetObject<Order>("Order").OrderTotal;
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UseBalance(string result)
+        {
+            if (result.Equals("true"))
+            {
+                var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                var total = HttpContext.Session.GetObject<Order>("Order").OrderTotal;
+                user.balance -= total;
+                _context.Update(user);
+                _context.SaveChanges();
+                var balanceChange = new BalanceAddition { Amount = 0 - total, Balance = user.balance, CustomerId = User.Identity.Name, PaymentDate = DateTime.Now };
+                _context.BalanceAdditions.Add(balanceChange);
+                _context.SaveChanges();
+                return RedirectToAction("SaveOrder");
+            }
             return RedirectToAction("Payment");
         }
 

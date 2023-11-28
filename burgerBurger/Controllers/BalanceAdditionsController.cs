@@ -32,7 +32,7 @@ namespace burgerBurger.Controllers
             ViewData["funds"] = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.balance;
             if (User.IsInRole("Admin"))
                 return _context.BalanceAdditions != null ? 
-                    View(await _context.BalanceAdditions.ToListAsync()) :
+                    View(await _context.BalanceAdditions.OrderByDescending(b => b.PaymentDate).ToListAsync()) :
                     Problem("Entity set 'ApplicationDbContext.BalanceAdditions'  is null.");
             else
                 return _context.BalanceAdditions != null ?
