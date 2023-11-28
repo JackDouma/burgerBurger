@@ -64,34 +64,7 @@ namespace burgerBurger.Controllers
             // get the order from the session var
             var balance = HttpContext.Session.GetObject<BalanceAddition>("Balance");
 
-            // get the api key from the site config
-            StripeConfiguration.ApiKey = _configuration.GetValue<string>("StripeSecretKey");
-
-            // stripe invocation from https://stripe.com/docs/checkout/quickstart?client=html
-            var options = new SessionCreateOptions
-            {
-                LineItems = new List<SessionLineItemOptions>
-                        {
-                          new SessionLineItemOptions
-                          {
-                            PriceData = new SessionLineItemPriceDataOptions
-                            {
-                                UnitAmount = (long?)(balance.Amount * 100), // total must be in cents, not dollars and cents
-                                Currency = "cad",
-                                ProductData = new SessionLineItemPriceDataProductDataOptions
-                                {
-                                    Name = "burgerBurger Purchase"
-                                },
-                            },
-                            Quantity = 1,
-                          },
-                        },
-                Mode = "payment",
-                SuccessUrl = "https://" + Request.Host + "/BalanceAdditions/SaveOrder",
-                CancelUrl = "https://" + Request.Host + "/Home/Account"
-            };
-            var service = new SessionService();
-            Session session = service.Create(options);
+            Session session = PaymentMethods.Payment(_configuration, balance.Amount, Request.Host.Value, "/BalanceAdditions/SaveOrder", "/Home/Account");
 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
