@@ -178,9 +178,6 @@ namespace burgerBurger.Controllers
 
             // redirect to payment
             return RedirectToAction("Payment");
-
-            // redirect to SaveOrder since stripe is not set up yet
-            //return RedirectToAction("SaveOrder");
         }
 
         // GET: /Shop/Payment => invoke Stripe payment session which displays their payment form

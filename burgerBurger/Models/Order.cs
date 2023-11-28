@@ -42,6 +42,8 @@ namespace burgerBurger.Models
         [MaxLength(100)]
         public string? CustomerId { get; set; }
 
+        public bool UsedBalance { get; set; }
+
         [MaxLength(100)]
         [Display(Name = "Payment Code")]
         public string? PaymentCode { get; set; }

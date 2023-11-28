@@ -1,0 +1,41 @@
+﻿@model IEnumerable<burgerBurger.Models.BalanceAddition>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>You're balance is currently $@ViewBag.Funds</h1>
+
+<p>
+    <a asp-action="Create">Add Funds</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.PaymentDate)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Balance)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

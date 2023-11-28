@@ -52,8 +52,6 @@ namespace burgerBurger.Models
         public Boolean itemThrowOutCheck { get; set; }
 
         public InventoryCategory Category { get; set; }
-        [Required]
-        public Ingredient Ingredient { get; set; }
 
         // forgien key
         [Display(Name = "Location")]
