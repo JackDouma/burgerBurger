@@ -7,6 +7,20 @@
 <div>
     <h4>Order</h4>
     <hr />
+    @if (User.IsInRole("Manager") && Model.Status != "Completed")
+    {
+        <form method="post" asp-controller="Orders" asp-action="Update" style="display: flex;align-items: center;justify-content: center;">
+            @Html.AntiForgeryToken()
+            <label name="Status" asp-for="Status" class="form-label">Update Status</label>
+            <select asp-for="Status" class="form-control">
+                <option value="Active">Active</option>
+                <option value="On Its Way">On Its Way</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <input name="ItemId" type="hidden" value=@Model.OrderId />
+            <button class="btn btn-primary m-3">Update</button>
+        </form>
+    }
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
