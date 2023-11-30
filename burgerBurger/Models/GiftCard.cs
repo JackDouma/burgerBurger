@@ -16,6 +16,10 @@ namespace burgerBurger.Models
 
         public Boolean redeemed { get; set; }
 
+        [Display(Name = "Customer Email")]
+        [MaxLength(100)]
+        public string? CustomerId { get; set; }
+
         public GiftCard()
         {
             redeemed = false;

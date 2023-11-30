@@ -111,20 +111,17 @@ namespace burgerBurger.Controllers
 
             if (ModelState.IsValid)
             {
-
-
                 // generate code
-                string generateCode = GenerateCode(16);
-
-            
-
+                string generateCode = GenerateCode(16);           
 
                 // hash code
-                string hashCode = HashCode(generateCode);
+                string hashCode = HashCode(generateCode);           
 
                 // assign var
                 giftCard.code = hashCode;
 
+                // assign user who bought it
+                giftCard.CustomerId = User.Identity.Name;
 
 
                 // CODE HERE TO SEND EMAIL OR TEXT MESSAGE OF GIFTCARD CODE
@@ -139,14 +136,14 @@ namespace burgerBurger.Controllers
                 var message = MessageResource.Create(
                     to: to,
                     from: from,
-                    body: $"You have recieved a ${giftCard.amount}.00 gift card for BurgerBurger! Enter {giftCard.code} on our website to redeem!");
+                    body: $"You have recieved a ${giftCard.amount}.00 gift card for BurgerBurger! Enter {generateCode} on our website to redeem!");
 
                 //return Content(message.Sid);
 
 
                 _context.Add(giftCard);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             return View(giftCard);
         }
