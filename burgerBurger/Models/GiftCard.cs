@@ -9,6 +9,9 @@ namespace burgerBurger.Models
         [DisplayFormat(DataFormatString = "{0:c}")]
         public decimal amount { get; set; }
 
+        public string giftPhoneNumber { get; set; }
+
+
         public string? code { get; set; }
 
         public Boolean redeemed { get; set; }

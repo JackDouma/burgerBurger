@@ -95,8 +95,8 @@ using Microsoft.EntityFrameworkCore;
          * 
          * Required in any razor page (at the top)
          *   @using Microsoft.AspNetCore.Identity
-         *   @inject SignInManager<IdentityUser> SignInManager
-         *   @inject UserManager<IdentityUser> UserManager
+         *   @inject SignInManager<ApplicationUser> SignInManager
+         *   @inject UserManager<ApplicationUser> UserManager
          *   
          *   Logic for hiding/showing items in razor page (see above for required injections)
          *

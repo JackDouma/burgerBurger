@@ -13,6 +13,15 @@ using Microsoft.CodeAnalysis.Completion;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 
+
+using System.Configuration;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
+
+using Twilio.TwiML;
+using Twilio.AspNet.Mvc;
+
 namespace burgerBurger.Controllers
 {
     public class GiftCardsController : Controller
@@ -96,23 +105,44 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GiftCardId,amount,code,redeemed")] GiftCard giftCard)
+        public async Task<IActionResult> Create([Bind("GiftCardId,amount,code,redeemed, giftPhoneNumber")] GiftCard giftCard) //string giftPhoneNum
         {
             // IF STATEMENT HERE FOR PAYMENT
 
             if (ModelState.IsValid)
-            {             
+            {
+
 
                 // generate code
                 string generateCode = GenerateCode(16);
 
-                // CODE HERE TO SEND EMAIL OR TEXT MESSAGE OF GIFTCARD CODE
+            
+
 
                 // hash code
                 string hashCode = HashCode(generateCode);
 
                 // assign var
                 giftCard.code = hashCode;
+
+
+
+                // CODE HERE TO SEND EMAIL OR TEXT MESSAGE OF GIFTCARD CODE
+
+                var accountSid = "AC2e8546a4562326dc5114a3220c8fb7e3";
+                var authToken = "63a35084de721329ed5e65a0ae743d6c";
+
+                // TRIAL ACCOUNT OF TWILIO WE CAN ONLY SEND TO VERIFIED NUMBERS (ALESSIO, MIKEY, JACK CURRENTLY)
+                TwilioClient.Init(accountSid, authToken);
+                var to = new PhoneNumber(giftCard.giftPhoneNumber);
+                var from = new PhoneNumber("+16154900859");
+                var message = MessageResource.Create(
+                    to: to,
+                    from: from,
+                    body: $"You have recieved a ${giftCard.amount}.00 gift card for BurgerBurger! Enter {giftCard.code} on our website to redeem!");
+
+                //return Content(message.Sid);
+
 
                 _context.Add(giftCard);
                 await _context.SaveChangesAsync();
