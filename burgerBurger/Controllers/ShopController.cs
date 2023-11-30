@@ -178,6 +178,55 @@ namespace burgerBurger.Controllers
             // store the order as session var so we can proceed to payment attempt
             HttpContext.Session.SetObject("Order", order);
 
+            var cartItems = _context.CartItems.Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId")).ToList();
+
+            // get inventory
+            var inventoryItem = _context.Inventory
+              .Where(i => i.Location.LocationId == order.LocationId)
+              .Where(i => i.itemThrowOutCheck == false)
+              .OrderBy(i => i.itemExpirey)
+              .ToList();
+
+            bool inventoryCheck = false;
+            // loop through each cartitem
+            foreach (var cart in cartItems)
+            {
+                var itemsInv = _context.ItemInventory.Where(i => i.ItemId == cart.ItemId).ToList();
+                List<InventoryOutline> inv = new List<InventoryOutline>();
+                foreach (var item in itemsInv)
+                {
+                    inv.Add(_context.InventoryOutline.FirstOrDefault(i => i.InventoryOutlineId == item.IngredientId));
+                }
+                foreach (var ingredient in inv)
+                {
+                    inventoryCheck = false;
+                    // loop through each inventory item
+                    foreach (var inventory in inventoryItem)
+                    {
+                        // only loop if inventory has not been found
+                        if (inventoryCheck == false)
+                        {
+                            // if ingredients match
+                            if (inventory.itemName == ingredient.itemName)
+                            {
+                                // if there is a enough ingredients available at store
+                                if (inventory.quantity >= (1 * cart.Quantity))
+                                {
+                                    inventory.quantity = inventory.quantity - (1 * cart.Quantity);
+                                    inventoryCheck = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // if false, ingredient was not found; cancel transaction
+                    if (inventoryCheck == false)
+                    {
+                        return RedirectToAction("Cart", "Shop", new { result = "outOfStock" });
+                    }
+                }
+            }
+
             // redirect to payment
             var user = _context.Users.FirstOrDefault(u => u.UserName == order.CustomerId);
             if (user.balance > order.OrderTotal)
@@ -236,58 +285,6 @@ namespace burgerBurger.Controllers
 
             // save each CartItem as a new OrderDetails record for this order
             var cartItems = _context.CartItems.Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId")).ToList();
-
-
-            // get inventory
-            var inventoryItem = _context.Inventory
-              .Where(i => i.Location.LocationId == order.LocationId)
-              .Where(i => i.itemThrowOutCheck == false)
-              .OrderBy(i => i.itemExpirey)
-              .ToList();
-
-            bool inventoryCheck = false;
-            // loop through each cartitem
-            foreach (var cart in cartItems)
-            {
-                var itemsInv = _context.ItemInventory.Where(i => i.ItemId == cart.ItemId).ToList();
-                List<InventoryOutline> inv = new List<InventoryOutline>();
-                foreach (var item in itemsInv)
-                {
-                    inv.Add(_context.InventoryOutline.FirstOrDefault(i => item.IngredientId == item.IngredientId));
-                }
-                foreach (var ingredient in inv)
-                {
-                    inventoryCheck = false;
-                    // loop through each inventory item
-                    foreach (var inventory in inventoryItem)
-                    {
-                        // only loop if inventory has not been found
-                        if (inventoryCheck == false)
-                        {
-                            // if ingredients match
-                            if (inventory.itemName == ingredient.itemName)
-                            {
-                                // if there is a enough ingredients available at store
-                                if (inventory.quantity >= (1 * cart.Quantity))
-                                {
-                                    inventory.quantity = inventory.quantity - (1 * cart.Quantity);
-                                    inventoryCheck = true;
-                                }
-                            }
-                        }
-                    }
-
-                    // if false, ingredient was not found; cancel transaction
-                    if (inventoryCheck == false)
-                    {
-                        return RedirectToAction("Cart", "Shop", new { result = "outOfStock" });
-                    }
-                }             
-            }
-
-
-
-
 
             // fill required PaymentCode temporarily
             order.PaymentCode = HttpContext.Session.GetString("CustomerId");

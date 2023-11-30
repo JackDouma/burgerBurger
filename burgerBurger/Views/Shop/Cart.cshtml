@@ -2,9 +2,17 @@
 
 @{
     ViewData["Title"] = "Your Cart";
+    string result = Context.Request.Query["result"];
 }
 
 <h1>Cart</h1>
+
+@if (result == "outOfStock")
+{
+    <div class="alert alert-danger">
+        <p>Error: Out of stock. Blame the manager.</p>
+    </div>
+}
 
 <table class="table">
     <thead>
