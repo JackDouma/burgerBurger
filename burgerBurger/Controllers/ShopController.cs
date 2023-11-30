@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
 using Stripe;
 using Stripe.Checkout;
+using Stripe.Terminal;
 
 namespace burgerBurger.Controllers
 {
@@ -229,19 +230,65 @@ namespace burgerBurger.Controllers
         // GET: /Shop/SaveOrder => create Order in DB, add OrderDetails, clear cart
         [Authorize]
         public IActionResult SaveOrder()
-        {
+        {        
             // get the order from session var
             var order = HttpContext.Session.GetObject<Order>("Order");
+
+            // save each CartItem as a new OrderDetails record for this order
+            var cartItems = _context.CartItems.Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId"));
+
+
+            // get inventory
+            var inventoryItem = _context.Inventory
+              .Where(i => i.Location.LocationId == order.LocationId)
+              .Where(i => i.itemThrowOutCheck == false)
+              .OrderBy(i => i.itemExpirey)
+              .ToList();
+
+            bool inventoryCheck = false;
+            // loop through each cartitem
+            foreach (var cart in cartItems)
+            {
+                foreach (var ingredient in cart.Item.Ingredients)
+                {
+                    inventoryCheck = false;
+                    // loop through each inventory item
+                    foreach (var inventory in inventoryItem)
+                    {
+                        // only loop if inventory has not been found
+                        if (inventoryCheck == false)
+                        {
+                            // if ingredients match
+                            if (inventory.itemName == ingredient.itemName)
+                            {
+                                // if there is a enough ingredients available at store
+                                if (inventory.quantity >= (1 * cart.Quantity))
+                                {
+                                    inventory.quantity = inventory.quantity - (1 * cart.Quantity);
+                                    inventoryCheck = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // if false, ingredient was not found; cancel transaction
+                    if (inventoryCheck == false)
+                    {
+                        return RedirectToAction("Cart", "Shop", new { result = "outOfStock" });
+                    }
+                }             
+            }
+
+
+
+
 
             // fill required PaymentCode temporarily
             order.PaymentCode = HttpContext.Session.GetString("CustomerId");
 
             // save new order to db
             _context.Add(order);
-            _context.SaveChanges();
-
-            // save each CartItem as a new OrderDetails record for this order
-            var cartItems = _context.CartItems.Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId"));
+            _context.SaveChanges();   
 
             foreach (var item in cartItems)
             {
@@ -254,6 +301,7 @@ namespace burgerBurger.Controllers
                 };
                 _context.Add(orderDetail);
             }
+
             _context.SaveChanges();
 
             // empty cart
