@@ -235,7 +235,7 @@ namespace burgerBurger.Controllers
             var order = HttpContext.Session.GetObject<Order>("Order");
 
             // save each CartItem as a new OrderDetails record for this order
-            var cartItems = _context.CartItems.Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId"));
+            var cartItems = _context.CartItems.Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId")).ToList();
 
 
             // get inventory
