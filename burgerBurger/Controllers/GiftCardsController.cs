@@ -123,7 +123,6 @@ namespace burgerBurger.Controllers
                 // assign user who bought it
                 giftCard.CustomerId = User.Identity.Name;
 
-
                 // CODE HERE TO SEND EMAIL OR TEXT MESSAGE OF GIFTCARD CODE
 
                 var accountSid = "AC2e8546a4562326dc5114a3220c8fb7e3";

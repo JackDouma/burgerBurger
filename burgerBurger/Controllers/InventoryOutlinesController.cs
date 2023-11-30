@@ -68,24 +68,7 @@ namespace burgerBurger.Controllers
                     inventoryOutline.itemShelfLife = 0;
                 }
                 _context.Add(inventoryOutline);
-                await _context.SaveChangesAsync();
-
-                var locations = _context.Location.ToList();
-                foreach(var l in locations)
-                {
-                    Inventory inventory = new Inventory();
-                    inventory.itemName = inventoryOutline.itemName;
-                    inventory.itemDescription = inventoryOutline.itemDescription;
-                    inventory.calories = inventoryOutline.calories;
-                    inventory.itemCost = inventoryOutline.itemCost;
-                    inventory.itemShelfLife = inventoryOutline.itemShelfLife;
-                    inventory.Category = inventoryOutline.Category;
-                    inventory.Outline = inventoryOutline.InventoryOutlineId;
-                    inventory.LocationId = l.LocationId;
-                    _context.Inventory.Add(inventory);
-                }
-                await _context.SaveChangesAsync();
-
+                await _context.SaveChangesAsync();        
                 return RedirectToAction(nameof(Index));
             }
             return View(inventoryOutline);
@@ -129,20 +112,6 @@ namespace burgerBurger.Controllers
                         inventoryOutline.itemShelfLife = 0;
                     }
                     _context.Update(inventoryOutline);
-                    await _context.SaveChangesAsync();
-
-                    var inventories = _context.Inventory.Where(i => i.Outline == inventoryOutline.InventoryOutlineId);
-
-                    foreach (var inventory in inventories)
-                    {
-                        inventory.itemName = inventoryOutline.itemName;
-                        inventory.itemDescription = inventoryOutline.itemDescription;
-                        inventory.calories = inventoryOutline.calories;
-                        inventory.itemCost = inventoryOutline.itemCost;
-                        inventory.itemShelfLife = inventoryOutline.itemShelfLife;
-                        inventory.Category = inventoryOutline.Category;
-                        _context.Inventory.Update(inventory);
-                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
