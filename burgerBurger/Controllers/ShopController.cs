@@ -249,7 +249,7 @@ namespace burgerBurger.Controllers
             // loop through each cartitem
             foreach (var cart in cartItems)
             {
-                var itemsInv = _context.ItemInventory.Where(i => i.ItemId == cart.ItemId);
+                var itemsInv = _context.ItemInventory.Where(i => i.ItemId == cart.ItemId).ToList();
                 List<InventoryOutline> inv = new List<InventoryOutline>();
                 foreach (var item in itemsInv)
                 {
