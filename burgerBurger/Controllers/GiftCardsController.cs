@@ -71,27 +71,28 @@ namespace burgerBurger.Controllers
                     {
                         user.balance += giftCard.amount;
                         giftCard.redeemed = true;
-
+                        var balanceChange = new BalanceAddition { Amount = giftCard.amount, Balance = user.balance, CustomerId = User.Identity.Name, PaymentDate = DateTime.Now };
                         _context.Users.Update(user);
                         _context.GiftCards.Update(giftCard);
+                        _context.BalanceAdditions.Add(balanceChange);
                         await _context.SaveChangesAsync();
 
-                        return RedirectToAction("Index", new { result = "success" });
+                        return RedirectToAction("BalanceAdditions", "Index", new { result = "success" });
                     }
                     // if user is not logged in
                     else
                     {
-                        return RedirectToAction("Index", new { result = "invalidUser" });
+                        return RedirectToAction("Home", "Index", new { result = "invalidUser" });
                     }
                 }
                 // invalid code
                 else
                 {
-                    return RedirectToAction("Index", new { result = "invalidCode" });
+                    return RedirectToAction("Home", "Index", new { result = "invalidCode" });
                 }
 
             }
-            return RedirectToAction("Index", new { result = "error" });
+            return RedirectToAction("Home", "Index", new { result = "error" });
         }
 
         // GET: GiftCards/Create

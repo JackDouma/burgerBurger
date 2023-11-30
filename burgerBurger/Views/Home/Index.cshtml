@@ -1,5 +1,30 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    string result = Context.Request.Query["result"];
+}
+@if (result == "success")
+{
+    <div class="alert alert-success">
+        <p>Giftcard successfully redeemed!</p>
+    </div>
+}
+@if (result == "invalidCode")
+{
+    <div class="alert alert-danger">
+        <p>Code is invalid.</p>
+    </div>
+}
+@if (result == "invalidUser")
+{
+    <div class="alert alert-danger">
+        <p>Please login or create an account.</p>
+    </div>
+}
+@if (result == "error")
+{
+    <div class="alert alert-danger">
+        <p>Error.</p>
+    </div>
 }
 
 <div class="text-center">
