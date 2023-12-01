@@ -82,7 +82,7 @@ namespace burgerBurger.Controllers
                     {
                         ItemId = ItemId,
                         Quantity = Quantity * 2,
-                        Price = (decimal)product.Price / 2,
+                        Price = (decimal)product.Price,
                         CustomerId = GetCustomerId()
                     };
                 }
@@ -153,8 +153,20 @@ namespace burgerBurger.Controllers
                 .ToList();
 
             // calc cart total for display
-            var total = (from c in cartItems
-                         select c.Quantity * c.Item.Price).Sum();
+            double total = 0;
+            foreach (var cartItem in cartItems)
+            {
+                if(cartItem.Item.discountPercentage == 1)
+                {
+                    total += (double)cartItem.Price * (cartItem.Quantity / 2);
+                }
+                else
+                {
+                    total += (double)cartItem.Price * cartItem.Quantity;
+                }
+            }
+            /*var total = (from c in cartItems
+                         select c.Quantity * c.Item.Price).Sum();*/
             ViewData["Total"] = total;
 
             // calc and store cart quantity total in a session var for display in navbar
@@ -207,9 +219,23 @@ namespace burgerBurger.Controllers
             order.OrderDate = DateTime.Now;
             order.CustomerId = User.Identity.Name;
 
-            order.OrderTotal = (decimal)(from c in _context.CartItems
-                                where c.CustomerId == HttpContext.Session.GetString("CustomerId")
-                                select c.Quantity * c.Item.Price).Sum();
+            var carts = _context.CartItems
+                .Include(c => c.Item)
+                .Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId"))
+                .ToList();
+
+            double total = 0;
+            foreach (var cartItem in carts)
+            {
+                if (cartItem.Item.discountPercentage == 1)
+                {
+                    order.OrderTotal += (decimal)cartItem.Price * (cartItem.Quantity / 2);
+                }
+                else
+                {
+                    order.OrderTotal += (decimal)cartItem.Price * cartItem.Quantity;
+                }
+            }
 
             // store the order as session var so we can proceed to payment attempt
             HttpContext.Session.SetObject("Order", order);
