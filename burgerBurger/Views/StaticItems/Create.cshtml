@@ -33,6 +33,20 @@
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="discountPercentage" class="control-label"></label>
+                <select asp-for="discountPercentage" class="form-control">
+                    <option value="0">No Promotion</option>
+                    <option value="0.1">10%</option>
+                    <option value="0.2">20%</option>
+                    <option value="0.25">25%</option>
+                    <option value="0.3">30%</option>
+                    <option value="0.4">40%</option>
+                    <option value="0.5">50%</option>
+                    <option value="1">Buy 1 get 1 free</option>
+                </select>
+                <span asp-validation-for="discountPercentage" class="text-danger"></span>
+            </div>
             <div id="ingredients" class="form-group">
                 <label class="control-label">Ingredients</label>
                 <br />

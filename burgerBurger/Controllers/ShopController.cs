@@ -54,30 +54,66 @@ namespace burgerBurger.Controllers
         }
 
         // GET: /products/AddToCart/
-        public IActionResult AddToCart(int ItemId, int Quantity)
+        public IActionResult AddToCart(int ItemId, int Quantity, double NewPrice)
         {
             var product = _context.OrderItem.Find(ItemId);
-
             // check if this cart already contains this product
             var cartItem = _context.CartItems.SingleOrDefault(c => c.ItemId == ItemId && c.CustomerId == GetCustomerId());
 
             if (cartItem == null)
             {
-                // create new CartItem and populate the fields
-                cartItem = new CartItem
+                // if discount
+                if (NewPrice != 0)
                 {
-                    ItemId = ItemId,
-                    Quantity = Quantity,
-                    Price = (decimal)product.Price,
-                    CustomerId = GetCustomerId()
-                };
+                    // create new CartItem and populate the fields
+                    cartItem = new CartItem
+                    {
+                        ItemId = ItemId,
+                        Quantity = Quantity,
+                        Price = (decimal)NewPrice,
+                        CustomerId = GetCustomerId()
+                    };
+                }
+                // if buy 1 get 1 free
+                else if (product.discountPercentage == 1)
+                {
+                    // create new CartItem and populate the fields
+                    cartItem = new CartItem
+                    {
+                        ItemId = ItemId,
+                        Quantity = Quantity * 2,
+                        Price = (decimal)product.Price / 2,
+                        CustomerId = GetCustomerId()
+                    };
+                }
+                // if no dicount
+                else
+                {
+                    // create new CartItem and populate the fields
+                    cartItem = new CartItem
+                    {
+                        ItemId = ItemId,
+                        Quantity = Quantity,
+                        Price = (decimal)product.Price,
+                        CustomerId = GetCustomerId()
+                    };
+                }               
 
                 _context.Add(cartItem);
             }
             else
             {
-                cartItem.Quantity += Quantity;
-                _context.Update(cartItem);
+                // buy 1 get 1 free
+                if (product.discountPercentage == 1)
+                {
+                    cartItem.Quantity += Quantity * 2;
+                    _context.Update(cartItem);
+                }               
+                else
+                {
+                    cartItem.Quantity += Quantity;
+                    _context.Update(cartItem);
+                }
             }
 
             _context.SaveChanges();
