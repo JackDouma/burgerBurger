@@ -181,8 +181,15 @@ namespace burgerBurger.Controllers
         [Authorize]
         public IActionResult Checkout()
         {
+            var customerId = GetCustomerId();
+
+            var cartItems = _context.CartItems.Where(c => c.CustomerId == customerId).Count();
+            if (cartItems == 0)
+            {
+                return RedirectToAction("Cart");
+            }
             var now = TimeOnly.FromDateTime(DateTime.Now);
-            var locations = _context.Location.AsEnumerable().Where(l => l.OpeningTime.Value.Ticks < now.Ticks).Where(l => l.ClosingTime.Value.Ticks > now.Ticks);
+            var locations = _context.Location.AsEnumerable().Where(l => l.OpeningTime.Value.Ticks < now.Ticks).Where(l => l.ClosingTime.Value.Ticks > now.Ticks || l.ClosingTime.Value.Ticks == 0);
             ViewData["Locations"] = new SelectList(locations, "LocationId", "DisplayName");
             ViewData["balance"] = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.balance;
             return View();
@@ -206,10 +213,10 @@ namespace burgerBurger.Controllers
             }
 
             var location = _context.Location.FindAsync(order.LocationId).Result.ClosingTime.Value.Ticks;
-            if (TimeOnly.FromDateTime(DateTime.Now).Ticks > location)
+            if (TimeOnly.FromDateTime(DateTime.Now).Ticks > location || location == 0)
             {
                 var now = TimeOnly.FromDateTime(DateTime.Now);
-                var locations = _context.Location.AsEnumerable().Where(l => l.OpeningTime.Value.Ticks < now.Ticks).Where(l => l.ClosingTime.Value.Ticks > now.Ticks);
+                var locations = _context.Location.AsEnumerable().Where(l => l.OpeningTime.Value.Ticks < now.Ticks).Where(l => l.ClosingTime.Value.Ticks > now.Ticks || l.ClosingTime.Value.Ticks == 0);
                 ViewData["Locations"] = new SelectList(locations, "LocationId", "DisplayName");
                 ViewData["error"] = "This location is currently closed. Please select another.";
                 return View(order);
@@ -224,7 +231,6 @@ namespace burgerBurger.Controllers
                 .Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId"))
                 .ToList();
 
-            double total = 0;
             foreach (var cartItem in carts)
             {
                 if (cartItem.Item.discountPercentage == 1)
