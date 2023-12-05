@@ -4,8 +4,8 @@
     ViewData["Title"] = "Your Cart";
     string result = Context.Request.Query["result"];
 }
-
-<h1>Cart</h1>
+  
+<h1 class="text-white">Cart</h1>
 
 @if (result == "outOfStock")
 {
@@ -14,7 +14,7 @@
     </div>
 }
 
-<table class="table">
+<table class="table bg-lettuce">
     <thead>
         <tr>
             <th></th>

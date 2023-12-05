@@ -2,25 +2,25 @@
     ViewData["Title"] = "Shop our Store";
 }
 
-<h1>Shop our Store</h1>
+<h1 class="text-white">Shop our Store</h1>
 
 <section class="row card-group">
     <div class="col-lg-6 mb-3">
         <div class="card mb-4">
-            <div class="card-body text-center h-100">
+            
                 <a asp-controller="CustomItems" asp-action="Index"
-                   asp-route-itemType="" class="btn btn-secondary">Custom Burger</a>
-            </div>
+                   asp-route-itemType="" class="card-body text-center text-black h-100 bg-cheese btn btn-secondary">Custom Burger</a>
+            
         </div>
     </div>
     @foreach (var category in ViewBag.types)
     {
         <div class="col-lg-6 mb-3">
             <div class="card mb-4">
-                <div class="card-body text-center h-100">
+                
                     <a asp-controller="Shop" asp-action="Category"
-                       asp-route-itemType="@category" class="btn btn-secondary">@category</a>
-                </div>
+               asp-route-itemType="@category" class="card-body text-center text-black h-100 bg-cheese btn btn-secondary">@category</a>
+                
             </div>
         </div>
     }
