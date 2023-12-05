@@ -13,9 +13,12 @@ namespace burgerBurger.Models
 
         public string? CustomerId { get; set; }
 
+
         public string? PaymentCode { get; set; }
         [Display(Name = "Balance After Purchase")]
         public decimal? Balance { get; set; }
+
+        [Display(Name = "Payment Date")]
         public DateTime? PaymentDate { get; set; }
     }
 }
