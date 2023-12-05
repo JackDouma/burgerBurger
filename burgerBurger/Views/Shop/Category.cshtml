@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Shop by Category";
+    double newPrice = 0;
 }
 
 <h1>You are shopping for @ViewData["itemType"]</h1>
@@ -21,32 +22,102 @@
     <section class="row card-group">
         @foreach (var product in Model)
         {
-            <div class="col-lg-4 mb-3">
-                <div class="card mb-4">
-                    <div class="card-body text-center h-100">
-                        <h3>@product.Name</h3>
-                        <h5>@product.Description</h5>
-                        <h5>@String.Format("{0:c}", product.Price)</h5>
-                        @if (!string.IsNullOrEmpty(product.Photo))
-                        {
-                            <img src="~/img/staticItems/@product.Photo" alt="@product.Name Image" class="thumb" />
-                        }
-                        else
-                        {
-                            <img src="~/img/staticItems/placeholder.png" alt="@product.Name Image" class="thumb" />
-                        }
-                        <form method="post" action="AddToCart" style="display: flex;align-items: center;justify-content: center;">
-                            @Html.AntiForgeryToken()
-                            <fieldset>
-                                <label for="Quantity">Quantity: </label>
-                                <input name="Quantity" required type="number" min="1" max="999" class="small-input" />
-                            </fieldset>
-                            <input name="ItemId" type="hidden" value="@product.Id" />
-                            <button class="btn btn-primary m-3">Add to Cart</button>
-                        </form>
+            // No promotion
+            if (product.discountPercentage == 0)
+            {
+                <div class="col-lg-4 mb-3">
+                    <div class="card mb-4">
+                        <div class="card-body text-center h-100">
+                            <h3>@product.Name</h3>
+                            <h5>@product.Description</h5>
+                            <h5>@String.Format("{0:c}", product.Price)</h5>
+                            @if (!string.IsNullOrEmpty(product.Photo))
+                            {
+                                <img src="~/img/staticItems/@product.Photo" alt="@product.Name Image" class="thumb" />
+                            }
+                            else
+                            {
+                                <img src="~/img/staticItems/placeholder.png" alt="@product.Name Image" class="thumb" />
+                            }
+                            <form method="post" action="AddToCart" style="display: flex;align-items: center;justify-content: center;">
+                                @Html.AntiForgeryToken()
+                                <fieldset>
+                                    <label for="Quantity">Quantity: </label>
+                                    <input name="Quantity" required type="number" min="1" max="100" class="small-input" value="1" />
+                                </fieldset>
+                                <input name="ItemId" type="hidden" value="@product.Id" />
+                                <button class="btn btn-primary m-3">Add to Cart</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+            // buy 1 get 1 free
+            else if (product.discountPercentage == 1)
+            {
+                <div class="col-lg-4 mb-3">
+                    <div class="card mb-4">
+                        <div class="card-body text-center h-100">
+                            <h2><span style="color: red;">BUY 1 GET 1 FREE</span></h2>
+                            <h3>@product.Name</h3>
+                            <h5>@product.Description</h5>
+                            <h5>@String.Format("{0:c}", product.Price)</h5>                          
+                            @if (!string.IsNullOrEmpty(product.Photo))
+                            {
+                                <img src="~/img/staticItems/@product.Photo" alt="@product.Name Image" class="thumb" />
+                            }
+                            else
+                            {
+                                <img src="~/img/staticItems/placeholder.png" alt="@product.Name Image" class="thumb" />
+                            }
+                            <form method="post" action="AddToCart" style="display: flex;align-items: center;justify-content: center;">
+                                @Html.AntiForgeryToken()
+                                <fieldset>
+                                    <label for="Quantity">Quantity: </label>
+                                    <input name="Quantity" required type="number" min="1" max="50" class="small-input" value="1" />
+                                </fieldset>
+                                <input name="ItemId" type="hidden" value="@product.Id" />
+                                <button class="btn btn-primary m-3">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+            // discount
+            else
+            {
+                newPrice = product.Price - (product.Price * product.discountPercentage);
+                var sale = product.discountPercentage * 100;
+                <div class="col-lg-4 mb-3">
+                    <div class="card mb-4">
+                        <div class="card-body text-center h-100">
+                            <h2><span style="color: red;">@sale% OFF SALE</span></h2>
+                            <h3>@product.Name</h3>
+                            <h5>@product.Description</h5>
+                            <h5>WAS: @String.Format("{0:c}", product.Price)</h5>
+                            <h5>NOW: @String.Format("{0:c}", newPrice)</h5>
+                            @if (!string.IsNullOrEmpty(product.Photo))
+                            {
+                                <img src="~/img/staticItems/@product.Photo" alt="@product.Name Image" class="thumb" />
+                            }
+                            else
+                            {
+                                <img src="~/img/staticItems/placeholder.png" alt="@product.Name Image" class="thumb" />
+                            }
+                            <form method="post" action="AddToCart" style="display: flex;align-items: center;justify-content: center;">
+                                @Html.AntiForgeryToken()
+                                <fieldset>
+                                    <label for="Quantity">Quantity: </label>
+                                    <input name="Quantity" required type="number" min="1" max="100" class="small-input" value="1" />
+                                </fieldset>
+                                <input name="ItemId" type="hidden" value="@product.Id" />
+                                <input name="NewPrice" type="hidden" value="@newPrice" />
+                                <button class="btn btn-primary m-3">Add to Cart</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }           
         }
     </section>
 }

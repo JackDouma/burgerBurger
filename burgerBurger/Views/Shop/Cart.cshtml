@@ -51,7 +51,7 @@
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Item.Price)
+                    @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
                     <a asp-action="RemoveFromCart" asp-route-id="@item.CartItemId">Remove From Cart</a>

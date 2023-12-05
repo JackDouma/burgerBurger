@@ -27,11 +27,6 @@ namespace burgerBurger.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var u = _userManager.Users.Where(u => u.UserName == "michaelrosanelli105@gmail.com").First();
-            await _userManager.RemoveFromRoleAsync(u, "Manager");
-            var res = await _userManager.IsInRoleAsync(u, "Manager");
-            await _userManager.AddToRoleAsync(u, "Manager");
-            res = await _userManager.IsInRoleAsync(u, "Manager");
             //var userManager = scope.service
             // if user is not an admin, show only their orders
             if (User.IsInRole("Customer"))
@@ -54,7 +49,7 @@ namespace burgerBurger.Controllers
                 return NotFound();
             }
 
-            if (User.IsInRole("Administrator") || User.IsInRole("Owner"))
+            if (User.IsInRole("Admin") || User.IsInRole("Owner"))
             {
                 var order = await _context.Orders
                     .Include(o => o.OrderDetails).ThenInclude(od => od.Item)

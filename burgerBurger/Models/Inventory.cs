@@ -70,5 +70,9 @@ namespace burgerBurger.Models
             itemThrowOutCheck = false;
             itemDeliveryDate = DateTime.Now;
         }
+
+        public bool MessageSent { get; set; }
+
     }
+
 }

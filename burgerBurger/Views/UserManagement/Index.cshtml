@@ -1,0 +1,70 @@
+﻿@model List<UserViewModel>
+
+<style>
+    h1 {
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    form {
+        margin: 0;
+    }
+
+    select, button {
+        padding: 6px;
+        margin: 5px 0;
+    }
+</style>
+
+<h1>User List</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Current Role</th>
+            <th>Change Role</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.CurrentRole</td>
+                <td>
+                    <form asp-controller="UserManagement" asp-action="ChangeRole" method="post">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <select name="newRole">
+                            <option value="DefaultRole">Select Role</option>
+                            @foreach (var role in user.AvailableRoles)
+                            {
+                                <option value="@role">@role</option>
+                            }
+                        </select>
+                        <button type="submit">Change Role</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

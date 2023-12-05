@@ -54,30 +54,66 @@ namespace burgerBurger.Controllers
         }
 
         // GET: /products/AddToCart/
-        public IActionResult AddToCart(int ItemId, int Quantity)
+        public IActionResult AddToCart(int ItemId, int Quantity, double NewPrice)
         {
             var product = _context.OrderItem.Find(ItemId);
-
             // check if this cart already contains this product
             var cartItem = _context.CartItems.SingleOrDefault(c => c.ItemId == ItemId && c.CustomerId == GetCustomerId());
 
             if (cartItem == null)
             {
-                // create new CartItem and populate the fields
-                cartItem = new CartItem
+                // if discount
+                if (NewPrice != 0)
                 {
-                    ItemId = ItemId,
-                    Quantity = Quantity,
-                    Price = (decimal)product.Price,
-                    CustomerId = GetCustomerId()
-                };
+                    // create new CartItem and populate the fields
+                    cartItem = new CartItem
+                    {
+                        ItemId = ItemId,
+                        Quantity = Quantity,
+                        Price = (decimal)NewPrice,
+                        CustomerId = GetCustomerId()
+                    };
+                }
+                // if buy 1 get 1 free
+                else if (product.discountPercentage == 1)
+                {
+                    // create new CartItem and populate the fields
+                    cartItem = new CartItem
+                    {
+                        ItemId = ItemId,
+                        Quantity = Quantity * 2,
+                        Price = (decimal)product.Price,
+                        CustomerId = GetCustomerId()
+                    };
+                }
+                // if no dicount
+                else
+                {
+                    // create new CartItem and populate the fields
+                    cartItem = new CartItem
+                    {
+                        ItemId = ItemId,
+                        Quantity = Quantity,
+                        Price = (decimal)product.Price,
+                        CustomerId = GetCustomerId()
+                    };
+                }               
 
                 _context.Add(cartItem);
             }
             else
             {
-                cartItem.Quantity += Quantity;
-                _context.Update(cartItem);
+                // buy 1 get 1 free
+                if (product.discountPercentage == 1)
+                {
+                    cartItem.Quantity += Quantity * 2;
+                    _context.Update(cartItem);
+                }               
+                else
+                {
+                    cartItem.Quantity += Quantity;
+                    _context.Update(cartItem);
+                }
             }
 
             _context.SaveChanges();
@@ -117,8 +153,20 @@ namespace burgerBurger.Controllers
                 .ToList();
 
             // calc cart total for display
-            var total = (from c in cartItems
-                         select c.Quantity * c.Item.Price).Sum();
+            double total = 0;
+            foreach (var cartItem in cartItems)
+            {
+                if(cartItem.Item.discountPercentage == 1)
+                {
+                    total += (double)cartItem.Price * (cartItem.Quantity / 2);
+                }
+                else
+                {
+                    total += (double)cartItem.Price * cartItem.Quantity;
+                }
+            }
+            /*var total = (from c in cartItems
+                         select c.Quantity * c.Item.Price).Sum();*/
             ViewData["Total"] = total;
 
             // calc and store cart quantity total in a session var for display in navbar
@@ -171,9 +219,23 @@ namespace burgerBurger.Controllers
             order.OrderDate = DateTime.Now;
             order.CustomerId = User.Identity.Name;
 
-            order.OrderTotal = (decimal)(from c in _context.CartItems
-                                where c.CustomerId == HttpContext.Session.GetString("CustomerId")
-                                select c.Quantity * c.Item.Price).Sum();
+            var carts = _context.CartItems
+                .Include(c => c.Item)
+                .Where(c => c.CustomerId == HttpContext.Session.GetString("CustomerId"))
+                .ToList();
+
+            double total = 0;
+            foreach (var cartItem in carts)
+            {
+                if (cartItem.Item.discountPercentage == 1)
+                {
+                    order.OrderTotal += (decimal)cartItem.Price * (cartItem.Quantity / 2);
+                }
+                else
+                {
+                    order.OrderTotal += (decimal)cartItem.Price * cartItem.Quantity;
+                }
+            }
 
             // store the order as session var so we can proceed to payment attempt
             HttpContext.Session.SetObject("Order", order);

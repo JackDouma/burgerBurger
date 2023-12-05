@@ -68,7 +68,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, string? Ingredients, IFormFile? Photo)
+        public async Task<IActionResult> Create([Bind("Id,Type,Name,Description,Price,discountPercentage")] StaticItem staticItem, string? Ingredients, IFormFile? Photo)
         {
             staticItem.IsSelling = true;
 
@@ -124,7 +124,7 @@ namespace burgerBurger.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Description,Price")] StaticItem staticItem, string Ingredients, IFormFile? Photo, string? CurrentPhoto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Type,Name,Description,Price,discountPercentage")] StaticItem staticItem, string Ingredients, IFormFile? Photo, string? CurrentPhoto)
         {
             if (id != staticItem.Id)
             {

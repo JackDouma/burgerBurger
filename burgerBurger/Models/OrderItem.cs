@@ -24,6 +24,10 @@ namespace burgerBurger.Models
 
         public string? Photo { get; set; }
 
+        [Range(0, double.MaxValue)]
+        [DisplayName("Promotion")]
+        public double discountPercentage { get; set; }  
+
         public OrderItem()
         {
             Ingredients = new List<InventoryOutline>();
