@@ -25,3 +25,35 @@ body {
     padding: 20px;
     height: 250px;
 }
+
+.bg-bun {
+    background-color: #f5deb3
+}
+
+.bg-lettuce {
+    background-color: #4caf50
+}
+
+.bg-tomato {
+    background-color: #ff6347
+}
+
+.bg-cheese {
+    background-color: #ffd700
+}
+
+.bg-meat {
+    background-color: #8b4513
+}
+
+.bg-sauce {
+    background-color: #ff8c00
+}
+
+.bg-onion {
+    background-color: #8b008b
+}
+
+.bg-shieldpot {
+    background-color: #00bfff
+}

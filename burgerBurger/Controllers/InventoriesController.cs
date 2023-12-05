@@ -10,6 +10,14 @@ using burgerBurger.Models;
 using System.Composition;
 using Microsoft.AspNetCore.Authorization;
 
+using System.Configuration;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
+
+using Twilio.TwiML;
+using Twilio.AspNet.Mvc;
+
 namespace burgerBurger.Controllers
 {
     [Authorize(Roles = "Admin,Manager,Owner")]
@@ -22,11 +30,39 @@ namespace burgerBurger.Controllers
             _context = context;
         }
 
+        private void CheckAndSendTwilioMessages(Inventory inventory)
+        {
+            if (!inventory.itemExpireCheck && inventory.itemExpirey.Date <= DateTime.Now.AddDays(3).Date)
+            {
+                if (!inventory.MessageSent)
+                {
+                    var accountSid = "AC2e8546a4562326dc5114a3220c8fb7e3";
+                    var authToken = "63a35084de721329ed5e65a0ae743d6c";
+
+                    TwilioClient.Init(accountSid, authToken);
+                    var to = new PhoneNumber("+16472271456"); // TODO: add logic to send to location manager
+                    var from = new PhoneNumber("+16154900859");
+                    var messageBody = $"Item '{inventory.itemName}' is about to expire on {inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife)}.";
+
+                    var message = MessageResource.Create(
+                        to: to,
+                        from: from,
+                        body: messageBody);
+
+                    inventory.MessageSent = true;
+
+                    _context.SaveChanges();
+                }
+            }
+        }
+
+
+
         // GET: Inventories
         //public async Task<IActionResult> Index()
         //{ 
-            //var applicationDbContext = _context.Inventory.Include(i => i.Location);
-            //return View(await applicationDbContext.ToListAsync());
+        //var applicationDbContext = _context.Inventory.Include(i => i.Location);
+        //return View(await applicationDbContext.ToListAsync());
         //}
 
         //GET: Inventories
@@ -165,6 +201,8 @@ namespace burgerBurger.Controllers
                 inventory.itemShelfLife = inventoryOutline.itemShelfLife;
                 inventory.Category = inventoryOutline.Category;
 
+                CheckAndSendTwilioMessages(inventory);
+
                 // if package
                 if (inventory.Category == Enums.InventoryCategory.Package)
                 {
@@ -238,6 +276,8 @@ namespace burgerBurger.Controllers
                     inventory.itemCost = inventoryOutline.itemCost;
                     inventory.itemShelfLife = inventoryOutline.itemShelfLife;
                     inventory.Category = inventoryOutline.Category;
+
+                    CheckAndSendTwilioMessages(inventory);
 
                     // if package
                     if (inventory.Category == Enums.InventoryCategory.Package)
