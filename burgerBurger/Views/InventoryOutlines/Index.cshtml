@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.itemName)
             </th>
             <th>
@@ -22,13 +25,10 @@
                 @Html.DisplayNameFor(model => model.calories)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.itemCost)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.itemShelfLife)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.itemCost)
             </th>
             <th></th>
         </tr>
@@ -36,6 +36,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.itemName)
             </td>
@@ -46,13 +49,13 @@
                 @Html.DisplayFor(modelItem => item.calories)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.itemCost)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.itemShelfLife)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.itemCost)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.InventoryOutlineId">Edit</a> |

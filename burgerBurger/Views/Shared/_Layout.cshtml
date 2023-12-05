@@ -59,13 +59,16 @@
                             </li>
                         }
                         @* @SignInManager.UserManager.Users.Where(u => u.Email.Equals(User.Identity.Name)).First().locationIdentifier *@
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a>
+                            </li>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="GiftCards" asp-action="Index">GiftCards</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="GiftCards" asp-action="Index">Gift Cards</a>
                             </li>
                         }
 

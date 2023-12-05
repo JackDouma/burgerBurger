@@ -7,6 +7,7 @@ namespace burgerBurger.Models
         public int GiftCardId { get; set; }
         [Required]
         [DisplayFormat(DataFormatString = "{0:c}")]
+        [Display(Name = "Dollar Amount")]
         public decimal amount { get; set; }
 
         public string giftPhoneNumber { get; set; }
@@ -14,6 +15,7 @@ namespace burgerBurger.Models
 
         public string? code { get; set; }
 
+        [Display(Name = "Redeemed")]
         public Boolean redeemed { get; set; }
 
         [Display(Name = "Customer Email")]
