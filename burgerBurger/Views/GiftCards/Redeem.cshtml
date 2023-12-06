@@ -4,28 +4,29 @@
     ViewData["Title"] = "Redeem Giftcard";
 }
 
-<h1>Redeem Giftcard</h1>
+<h1 class="text-white">Redeem Giftcard</h1>
 
-<h4>Enter Code</h4>
+<h4 class="text-white">Enter Code</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Redeem">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label for="enteredCode">Code: </label>
+                <label for="enteredCode" class="text-white">Code</label>
                 <input type="text" name="enteredCode" class="form-control" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Redeem" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back</a>
-</div>
+<br />
+<button class="btn btn-secondary">
+    <a asp-controller="Home" asp-action="Account" class="text-white">Back</a>
+</button>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

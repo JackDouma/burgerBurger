@@ -4,39 +4,39 @@
     ViewData["Title"] = "Garbage";
 }
 
-<h1>Garbage</h1>
+<h1 class="text-white">Garbage</h1>
 
 
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemName)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemExpirey)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemDeliveryDate)
             </th>
-            <th></th>
+            <th class="text-white"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.itemName)
                 </td>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.itemExpirey)
                 </td>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.itemDeliveryDate)
                 </td>
-                <td>
-                    <a asp-action="UndoThrowOut" asp-route-id="@item.InventoryId">Undo</a>
+                <td class="text-white">
+                    <a asp-action="UndoThrowOut" asp-route-id="@item.InventoryId" class="text-white">Undo</a>
                 </td>
             </tr>
         }

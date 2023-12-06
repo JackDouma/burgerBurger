@@ -1,66 +1,66 @@
 ﻿@model IEnumerable<burgerBurger.Models.InventoryOutline>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Items";
 }
 
-<h1>Index</h1>
+<h1 class="text-white">Items</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="text-white">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.Category)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemName)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemDescription)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.calories)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemShelfLife)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemCost)
             </th>
-            <th></th>
+            <th class="text-white"></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.Category)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.itemName)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.itemDescription)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.calories)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.itemShelfLife)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.Category)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.itemCost)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.InventoryOutlineId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.InventoryOutlineId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.InventoryOutlineId">Delete</a>
+            <td class="text-white">
+                <a asp-action="Edit" asp-route-id="@item.InventoryOutlineId" class="text-white">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.InventoryOutlineId" class="text-white">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.InventoryOutlineId" class="text-white">Delete</a>
             </td>
         </tr>
 }

@@ -20,16 +20,16 @@
     total = equity - liability;
 }
 
-<h1>Balance Sheet</h1>
+<h1 class="text-white">Balance Sheet</h1>
 
-<h2>Equities</h2>
+<h2 class="text-white">Equities</h2>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-white">
                 Order Date
             </th>
-            <th>
+            <th class="text-white">
                 Order Total
             </th>
         </tr>
@@ -39,33 +39,33 @@
         {
             var typedOrder = (Order)order;
             <tr>
-                <td>
+                <td class="text-white">
                     @typedOrder.OrderDate
                 </td>
-                <td>
+                <td class="text-white">
                     @typedOrder.OrderTotal
                 </td>
             </tr>           
         }   
         <tr>
-            <td class="font-weight-bold">
+            <td class="text-white">
                 @String.Format("Total Item Equities: {0:c}", equity)
             </td>
         </tr>
     </tbody>
 </table>
 
-<h2>Liabilities</h2>
+<h2 class="text-white">Liabilities</h2>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemName)
             </th>          
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemCost)
             </th>         
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemDeliveryDate)
             </th>         
         </tr>
@@ -74,26 +74,26 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.itemName)
-                </td>              
-                <td>
+                </td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.itemCost)
                 </td>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.itemDeliveryDate)
                 </td>
             </tr>
         }
         <tr>
-            <td class="font-weight-bold">
+            <td class="text-white">
                 @String.Format("Total Item Liabilities: {0:c}", liability)
             </td>
         </tr>   
     </tbody>
 </table>
 
-<h3>
+<h3 class="text-white">
     @String.Format("Total Profit: {0:c}", total)
 </h3>
 <button class="btn btn-primary">

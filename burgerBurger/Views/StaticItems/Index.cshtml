@@ -1,83 +1,83 @@
 ﻿@model IEnumerable<burgerBurger.Models.StaticItem>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Menu Items";
 }
 
-<h1>Index</h1>
+<h1 class="text-white">Menu Items</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="text-white">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.Type)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.discountPercentage)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.totalCalories)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.Photo)
             </th>
-            <th></th>
+            <th class="text-white"></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.discountPercentage)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.totalCalories)
             </td>
-                <td>
-                    @if (item.Photo != null)
-                    {
-                        <img src="~/img/staticItems/@item.Photo" alt="Product Photo" class="thumb" />
-                    }
-                    else
-                    {
-                        <p>N/A</p>
-                    }
-                </td>
-            <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+            <td class="text-white">
+                @if (item.Photo != null)
+                {
+                    <img src="~/img/staticItems/@item.Photo" alt="Product Photo" class="thumb" />
+                }
+                else
+                {
+                    <p class="text-white">N/A</p>
+                }
+            </td>
+            <td class="text-white">
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="text-white">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="text-white">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="text-white">Delete</a> |
                     @if (item.IsSelling)
                     {
-                        <a asp-action="RemoveFromStorefront" asp-route-id="@item.Id">Take Off Storefront</a>
+                        <a asp-action="RemoveFromStorefront" asp-route-id="@item.Id" class="text-white">Take Off Storefront</a>
                     }
                     else
                     {
-                        <a asp-action="AddBackToStorefront" asp-route-id="@item.Id">Add Back To Storefront</a>
+                        <a asp-action="AddBackToStorefront" asp-route-id="@item.Id" class="text-white">Add Back To Storefront</a>
                     }
                 </td>
         </tr>

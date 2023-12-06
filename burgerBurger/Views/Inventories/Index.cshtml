@@ -5,87 +5,87 @@
     
 }
 
-<h1>Inventory</h1>
+<h1 class="text-white">Inventory</h1>
 
 <p>
-    <a asp-action="Create">Create</a>
+    <a asp-action="Create" class="text-white">Create</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.Category)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemName)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.quantity)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.calories)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemShelfLife)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemDeliveryDate)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemExpirey)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.itemExpireCheck)
             </th>
-            <th></th>
+            <th class="text-white"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.Category)
                 </td>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.itemName)
                 </td>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.quantity)
                 </td>
                 @if (item.Category != burgerBurger.Enums.InventoryCategory.Package)
                 {
-                    <td>
+                    <td class="text-white">
                         @Html.DisplayFor(modelItem => item.calories)
                     </td>
-                    <td>
+                    <td class="text-white">
                         @Html.DisplayFor(modelItem => item.itemShelfLife)
                     </td>
-                    <td>
+                    <td class="text-white">
                         @Html.DisplayFor(modelItem => item.itemDeliveryDate)
                     </td>
-                    <td>
+                    <td class="text-white">
                         @Html.DisplayFor(modelItem => item.itemExpirey)
                     </td>
-                    <td>
+                    <td class="text-white">
                         @Html.DisplayFor(modelItem => item.itemExpireCheck)
                     </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a> |
-                        <a asp-action="ThrowOut" asp-route-id="@item.InventoryId">Throw Out</a>
+                    <td class="text-white">
+                        <a asp-action="Details" asp-route-id="@item.InventoryId" class="text-white">Details</a> |
+                        <a asp-action="ThrowOut" asp-route-id="@item.InventoryId" class="text-white">Throw Out</a>
                     </td>
                 }
                 else
                 {
-                    <td></td>
-                    <td></td>
-                    <td>
+                    <td class="text-white"></td>
+                    <td class="text-white"></td>
+                    <td class="text-white">
                         @Html.DisplayFor(modelItem => item.itemDeliveryDate)
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.InventoryId">Details</a>
+                    <td class="text-white"></td>
+                    <td class="text-white"></td>
+                    <td class="text-white">
+                        <a asp-action="Details" asp-route-id="@item.InventoryId" class="text-white">Details</a>
                     </td>
                 }
             </tr>          

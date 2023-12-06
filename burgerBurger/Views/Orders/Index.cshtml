@@ -7,27 +7,27 @@
     ViewData["Title"] = "Order History";
 }
 
-<h1>Index</h1>
+<h1 class="text-white">Orders</h1>
 
 <table class="table">
     <thead>
         <tr>
             @if (!User.IsInRole("Customer"))
             {
-                <th>
+                <th class="text-white">
                     @Html.DisplayNameFor(model => model.CustomerId)
                 </th>
             }
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.OrderDate)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.OrderTotal)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            <th></th>
+            <th class="text-white"></th>
         </tr>
     </thead>
     <tbody>
@@ -36,21 +36,21 @@
             <tr>
                 @if (!User.IsInRole("Customer"))
                 {
-                    <td>
+                    <td class="text-white">
                         @Html.DisplayFor(modelItem => item.CustomerId)
                     </td>
                 }
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.OrderDate)
                 </td>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.OrderTotal)
                 </td>
-                <td>
+                <td class="text-white">
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.OrderId">Details</a>
+                <td class="text-white">
+                    <a asp-action="Details" asp-route-id="@item.OrderId" class="text-white">Details</a>
                 </td>
             </tr>
         }

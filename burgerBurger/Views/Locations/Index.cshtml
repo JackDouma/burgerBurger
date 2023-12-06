@@ -4,43 +4,43 @@
     ViewData["Title"] = "Location";
 }
 
-<h1>Locations</h1>
+<h1 class="text-white">Locations</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="text-white">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-white">
                 Name
             </th>
-            <th>
+            <th class="text-white">
                 Store Location
             </th>
-            <th>
+            <th class="text-white">
                 Inventory
             </th>
-            <th></th>
+            <th class="text-white"></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) 
 {
         <tr>
-            <td>
+            <td class="text-white">
                     @Html.DisplayFor(modelItem => item.LocationName)
             </td>
-            <td>
+            <td class="text-white">
                     @Html.DisplayFor(modelItem => item.locationCity) @Html.DisplayFor(modelItem => item.locationProvince) @Html.DisplayFor(modelItem => item.locationAddress)
             </td>
-            <td>
-                    <a asp-controller="Inventories" asp-action="Index" asp-route-locationId="@item.LocationId">View</a>
+            <td class="text-white">
+                        <a asp-controller="Inventories" asp-action="Index" asp-route-locationId="@item.LocationId" class="text-white">View</a>
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.LocationId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LocationId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LocationId">Delete</a>
+            <td class="text-white">
+                <a asp-action="Edit" asp-route-id="@item.LocationId" class="text-white">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LocationId" class="text-white">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LocationId" class="text-white">Delete</a>
             </td>
         </tr>
 }

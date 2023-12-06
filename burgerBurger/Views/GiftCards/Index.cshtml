@@ -4,15 +4,15 @@
     ViewData["Title"] = "Giftcards";
 }
 
-<h1>Giftcards</h1>
+<h1 class="text-white">Giftcards</h1>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.amount)
             </th>
-            <th>
+            <th class="text-white">
                 @Html.DisplayNameFor(model => model.redeemed)
             </th>
         </tr>
@@ -20,10 +20,10 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.amount)
             </td>
-            <td>
+            <td class="text-white">
                 @Html.DisplayFor(modelItem => item.redeemed)
             </td>
         </tr>
