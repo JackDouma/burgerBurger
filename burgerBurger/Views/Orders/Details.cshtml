@@ -7,7 +7,7 @@
 <div>
     <h4>Order</h4>
     <hr />
-    @if (User.IsInRole("Manager") && Model.Status != "Completed")
+    @if ((User.IsInRole("Manager") || User.IsInRole("Owner") || User.IsInRole("Admin")) && Model.Status != "Completed")
     {
         <form method="post" asp-controller="Orders" asp-action="Update" style="display: flex;align-items: center;justify-content: center;" class="form-group">
             @Html.AntiForgeryToken()
