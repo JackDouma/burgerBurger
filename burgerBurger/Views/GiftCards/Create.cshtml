@@ -2,9 +2,18 @@
 
 @{
     ViewData["Title"] = "Buy Giftcard";
+    string result = Context.Request.Query["result"];
 }
 
 <h1 class="text-white">Buy Giftcard</h1>
+
+@if (result == "success")
+{
+    <div class="alert alert-success">
+        <p>Thank you for your purchase! The amount has been sent to the designated recipient!</p>
+    </div>
+}
+
 <hr />
 <div class="row">
     <div class="col-md-4">

@@ -21,16 +21,23 @@ using Twilio.Types;
 
 using Twilio.TwiML;
 using Twilio.AspNet.Mvc;
+using Stripe.Checkout;
+using burgerBurger.Data.Migrations;
+using Stripe;
 
 namespace burgerBurger.Controllers
 {
+    [Authorize(Roles = "Admin,Customer")]
     public class GiftCardsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public GiftCardsController(ApplicationDbContext context)
+        private readonly IConfiguration _configuration; 
+
+        public GiftCardsController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: GiftCards
@@ -112,40 +119,66 @@ namespace burgerBurger.Controllers
 
             if (ModelState.IsValid)
             {
-                // generate code
-                string generateCode = GenerateCode(16);           
+                HttpContext.Session.SetObject("GiftCard", giftCard);
+                return RedirectToAction("Payment");
 
-                // hash code
-                string hashCode = HashCode(generateCode);           
-
-                // assign var
-                giftCard.code = hashCode;
-
-                // assign user who bought it
-                giftCard.CustomerId = User.Identity.Name;
-
-                // CODE HERE TO SEND EMAIL OR TEXT MESSAGE OF GIFTCARD CODE
-
-                var accountSid = "AC2e8546a4562326dc5114a3220c8fb7e3";
-                var authToken = "63a35084de721329ed5e65a0ae743d6c";
-
-                // TRIAL ACCOUNT OF TWILIO WE CAN ONLY SEND TO VERIFIED NUMBERS (ALESSIO, MIKEY, JACK CURRENTLY)
-                TwilioClient.Init(accountSid, authToken);
-                var to = new PhoneNumber(giftCard.giftPhoneNumber);
-                var from = new PhoneNumber("+16154900859");
-                var message = MessageResource.Create(
-                    to: to,
-                    from: from,
-                    body: $"You have recieved a ${giftCard.amount}.00 gift card for BurgerBurger! Enter {generateCode} on our website to redeem!");
-
-                //return Content(message.Sid);
-
-
-                _context.Add(giftCard);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
             }
             return View(giftCard);
+        }
+
+        [Authorize(Roles = "Customer,Admin")]
+        public IActionResult Payment()
+        {
+            // get the order from the session var
+            var giftCard = HttpContext.Session.GetObject<GiftCard>("GiftCard");
+
+            Session session = PaymentMethods.Payment(_configuration, giftCard.amount, Request.Host.Value, "/GiftCards/SaveOrder", "/GiftCards/Create");
+
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
+        }
+
+        [Authorize(Roles = "Customer,Admin")]
+        public IActionResult SaveOrder()
+        {
+
+            var giftCard = HttpContext.Session.GetObject<GiftCard>("GiftCard");
+
+            // generate code
+            string generateCode = GenerateCode(16);
+
+            // hash code
+            string hashCode = HashCode(generateCode);
+
+            // assign var
+            giftCard.code = hashCode;
+
+            // assign user who bought it
+            giftCard.CustomerId = User.Identity.Name;
+
+            // CODE HERE TO SEND EMAIL OR TEXT MESSAGE OF GIFTCARD CODE
+
+            var accountSid = "AC2e8546a4562326dc5114a3220c8fb7e3";
+            var authToken = "63a35084de721329ed5e65a0ae743d6c";
+
+            // TRIAL ACCOUNT OF TWILIO WE CAN ONLY SEND TO VERIFIED NUMBERS (ALESSIO, MIKEY, JACK CURRENTLY)
+            TwilioClient.Init(accountSid, authToken);
+            var to = new PhoneNumber(giftCard.giftPhoneNumber);
+            var from = new PhoneNumber("+16154900859");
+            var message = MessageResource.Create(
+                to: to,
+            from: from,
+                body: $"You have recieved a ${giftCard.amount}.00 gift card for BurgerBurger! Enter {generateCode} on our website to redeem!");
+
+            //return Content(message.Sid);
+
+            _context.Add(giftCard);
+            _context.SaveChangesAsync();
+
+            // clear session variables
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Create", new { result = "success" });
         }
 
         private bool GiftCardExists(int id)

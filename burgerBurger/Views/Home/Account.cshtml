@@ -13,15 +13,18 @@
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><p class="text-white">Manage Account</p></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="BalanceAdditions" asp-action="Index"><p class="text-white">Add Funds to Balance</p></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="GiftCards" asp-action="Create"><p class="text-white">Purchase Gift Card</p></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="GiftCards" asp-action="Redeem"><p class="text-white">Redeem Gift Card</p></a>
-    </li>
+    @if (User.IsInRole("Admin") || User.IsInRole("Customer"))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="BalanceAdditions" asp-action="Index"><p class="text-white">Add Funds to Balance</p></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="GiftCards" asp-action="Create"><p class="text-white">Purchase Gift Card</p></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-controller="GiftCards" asp-action="Redeem"><p class="text-white">Redeem Gift Card</p></a>
+        </li>
+    }
     @if (User.IsInRole("Admin") || User.IsInRole("Owner"))
     {
         <li class="nav-item">

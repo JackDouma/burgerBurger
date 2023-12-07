@@ -9,7 +9,7 @@
     <hr />
     @if (User.IsInRole("Manager") && Model.Status != "Completed")
     {
-        <form method="post" asp-controller="Orders" asp-action="Update" style="display: flex;align-items: center;justify-content: center;">
+        <form method="post" asp-controller="Orders" asp-action="Update" style="display: flex;align-items: center;justify-content: center;" class="form-group">
             @Html.AntiForgeryToken()
             <label name="Status" asp-for="Status" class="form-label">Update Status</label>
             <select asp-for="Status" class="form-control">

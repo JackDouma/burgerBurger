@@ -73,6 +73,15 @@ namespace burgerBurger.Controllers
                 return NotFound();
             }
 
+            if (User.IsInRole("Manager"))
+            {
+                var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                if (location != locationId)
+                {
+                    return RedirectToAction("Index", new { locationId = location });
+                }
+            }
+
             ViewData["locationId"] = locationId;
             
             var inventory = _context.Inventory
@@ -91,6 +100,15 @@ namespace burgerBurger.Controllers
 
             if (item != null)
             {
+                if (User.IsInRole("Manager"))
+                {
+                    var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                    if (location != item.LocationId)
+                    {
+                        return RedirectToAction("Index", new { locationId = location });
+                    }
+                }
+
                 item.itemThrowOutCheck = true;
                 _context.SaveChanges();
             }
@@ -105,6 +123,15 @@ namespace burgerBurger.Controllers
 
             if (item != null)
             {
+                if (User.IsInRole("Manager"))
+                {
+                    var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                    if (location != item.LocationId)
+                    {
+                        return RedirectToAction("Index", new { locationId = location });
+                    }
+                }
+
                 item.itemThrowOutCheck = false;
                 _context.SaveChanges();
             }
@@ -120,6 +147,14 @@ namespace burgerBurger.Controllers
                 return NotFound();
             }
 
+            if (User.IsInRole("Manager"))
+            {
+                var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                if (location != locationId)
+                {
+                    return RedirectToAction("Index", new { locationId = location });
+                }
+            }
 
             var orders = _context.Orders
                 .Where(o => o.LocationId == locationId)
@@ -145,6 +180,14 @@ namespace burgerBurger.Controllers
                 return NotFound();
             }
 
+            if (User.IsInRole("Manager"))
+            {
+                var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                if (location != locationId)
+                {
+                    return RedirectToAction("Index", new { locationId = location });
+                }
+            }
 
             ViewData["locationId"] = locationId;
 
@@ -168,6 +211,17 @@ namespace burgerBurger.Controllers
             var inventory = await _context.Inventory
                 .Include(i => i.Location)
                 .FirstOrDefaultAsync(m => m.InventoryId == id);
+
+            if (User.IsInRole("Manager"))
+            {
+                var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                if (location != inventory.LocationId)
+                {
+                    return RedirectToAction("Index", new { locationId = location });
+                }
+            }
+
+
             if (inventory == null)
             {
                 return NotFound();
@@ -180,7 +234,15 @@ namespace burgerBurger.Controllers
         public IActionResult Create()
         {
             ViewData["Ingredients"] = new SelectList(_context.InventoryOutline, "InventoryOutlineId", "itemName");
-            ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "locationAddress");
+            if (User.IsInRole("Manager"))
+            {
+                var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                ViewData["LocationId"] = new SelectList(_context.Location.Where(l => l.LocationId == location), "LocationId", "locationAddress");
+            }
+            else
+            {
+                ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "locationAddress");
+            }
             return View();
         }
 
@@ -193,6 +255,15 @@ namespace burgerBurger.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (User.IsInRole("Manager"))
+                {
+                    var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                    if (location != inventory.LocationId)
+                    {
+                        return RedirectToAction("Index", new { locationId = location });
+                    }
+                }
+
                 InventoryOutline inventoryOutline = _context.InventoryOutline.Find(inventory.Outline);
                 inventory.itemName = inventoryOutline.itemName;
                 inventory.itemDescription = inventoryOutline.itemDescription;
@@ -244,10 +315,21 @@ namespace burgerBurger.Controllers
             }
 
             var inventory = await _context.Inventory.FindAsync(id);
+
             if (inventory == null)
             {
                 return NotFound();
             }
+
+            if (User.IsInRole("Manager"))
+            {
+                var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                if (location != inventory.LocationId)
+                {
+                    return RedirectToAction("Index", new { locationId = location });
+                }
+            }
+
             ViewData["LocationId"] = new SelectList(_context.Location, "LocationId", "locationAddress", inventory.LocationId);
             return View(inventory);
         }
@@ -268,6 +350,14 @@ namespace burgerBurger.Controllers
             {
                 try
                 {
+                    if (User.IsInRole("Manager"))
+                    {
+                        var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                        if (location != inventory.LocationId)
+                        {
+                            return RedirectToAction("Index", new { locationId = location });
+                        }
+                    }
 
                     InventoryOutline inventoryOutline = _context.InventoryOutline.Find(inventory.Outline);
                     inventory.itemName = inventoryOutline.itemName;
@@ -338,6 +428,15 @@ namespace burgerBurger.Controllers
                 return NotFound();
             }
 
+            if (User.IsInRole("Manager"))
+            {
+                var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                if (location != inventory.LocationId)
+                {
+                    return RedirectToAction("Index", new { locationId = location });
+                }
+            }
+
             return View(inventory);
         }
 
@@ -351,8 +450,17 @@ namespace burgerBurger.Controllers
                 return Problem("Entity set 'ApplicationDbContext.Inventory'  is null.");
             }
             var inventory = await _context.Inventory.FindAsync(id);
+
             if (inventory != null)
             {
+                if (User.IsInRole("Manager"))
+                {
+                    var location = _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name).Result.locationIdentifier;
+                    if (location != inventory.LocationId)
+                    {
+                        return RedirectToAction("Index", new { locationId = location });
+                    }
+                }
                 _context.Inventory.Remove(inventory);
             }
             

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>New Shipment</h1>
 
 <h4>Inventory</h4>
 <hr />
@@ -13,7 +13,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Outline" class="control-label"></label>
+                <label asp-for="Outline" class="control-label">Ingredient</label>
                 <select asp-for="Outline" class="form-control" asp-items="ViewBag.Ingredients"></select>
                 <span asp-validation-for="Outline" class="text-danger"></span>
             </div>
