@@ -77,22 +77,22 @@ namespace burgerBurger.Controllers
                         _context.BalanceAdditions.Add(balanceChange);
                         await _context.SaveChangesAsync();
 
-                        return RedirectToAction("BalanceAdditions", "Index", new { result = "success" });
+                        return RedirectToAction("Index", "BalanceAdditions", new { result = "success" });
                     }
                     // if user is not logged in
                     else
                     {
-                        return RedirectToAction("Home", "Index", new { result = "invalidUser" });
+                        return RedirectToAction("Index", "Index", new { result = "invalidUser" });
                     }
                 }
                 // invalid code
                 else
                 {
-                    return RedirectToAction("Home", "Index", new { result = "invalidCode" });
+                    return RedirectToAction("Index", "Home", new { result = "invalidCode" });
                 }
 
             }
-            return RedirectToAction("Home", "Index", new { result = "error" });
+            return RedirectToAction("Index", "Home", new { result = "error" });
         }
 
         // GET: GiftCards/Create
