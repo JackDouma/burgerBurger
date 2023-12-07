@@ -9,6 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - burgerBurger</title>
+    <link rel="icon" href="~/img/sitePictures/icon.jpg">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/burgerBurger.styles.css" asp-append-version="true" />
@@ -33,13 +34,13 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="InventoryOutlines" asp-action="Index">Ingredient Outlines</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="StaticItems" asp-action="Index">Static Items</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="StaticItems" asp-action="Index">Menu Items</a>
                             </li>
                         }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="CustomItems" asp-action="Index">Custom Items</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CustomItems" asp-action="Index">Custom Burgers</a>
                             </li>
                         }
                         @if (!User.IsInRole("Manager") || User.IsInRole("Owner"))

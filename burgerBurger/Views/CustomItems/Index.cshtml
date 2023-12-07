@@ -40,7 +40,7 @@
                     @Html.AntiForgeryToken()
                     <fieldset>
                         <label for="Quantity" class="text-white">Quantity: </label>
-                        <input name="Quantity" required type="number" min="1" max="999" class="small-input" />
+                        <input name="Quantity" required type="number" min="1" max="999" class="small-input" value="1" />
                     </fieldset>
                     <input name="ItemId" type="hidden" value="@item.Id" />
                     <button class="btn btn-primary m-3">Add to Cart</button>
