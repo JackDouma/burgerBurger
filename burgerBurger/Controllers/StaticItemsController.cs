@@ -210,6 +210,12 @@ namespace burgerBurger.Controllers
             var staticItem = await _context.StaticItem.FindAsync(id);
             if (staticItem != null)
             {
+                if (staticItem.Photo != null)
+                {
+                    var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\img\\staticItems\\" + staticItem.Photo;
+                    new FileInfo(uploadPath).Delete();
+                }
+
                 _context.StaticItem.Remove(staticItem);
                 // Remove all records in the ItemInventory that reference the deleted static item
                 var cor = _context.ItemInventory.Where(x => x.ItemId == staticItem.Id);

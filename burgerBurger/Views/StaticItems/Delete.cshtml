@@ -39,7 +39,14 @@
             @Html.DisplayNameFor(model => model.Photo)
         </dt>
         <dd class="col-sm-10">
-            <img src="~/img/staticItems/@Html.DisplayFor(model => model.Photo)" alt="@Html.DisplayFor(model => model.Name) Image" class="image" />
+            @if (Model.Photo != null)
+            {
+                <img src="~/img/staticItems/@Html.DisplayFor(model => model.Photo)" alt="@Html.DisplayFor(model => model.Name) Image" class="image" />
+            }
+            else
+            {
+                <img src="~/img/staticItems/placeholder.png" alt="@Html.DisplayFor(model => model.Name) Image" class="image" />
+            }
         </dd>
     </dl>
     
