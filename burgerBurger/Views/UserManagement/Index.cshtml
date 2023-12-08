@@ -21,7 +21,7 @@
         margin: 0;
     }
 
-    select, button {
+    select, input, button {
         padding: 6px;
         margin: 5px 0;
     }
@@ -34,7 +34,9 @@
         <tr>
             <th class="text-white">Email</th>
             <th class="text-white">Current Role</th>
+            <th class="text-white">Location Identifier</th>
             <th class="text-white">Change Role</th>
+            <th class="text-white">Update Location</th>
         </tr>
     </thead>
     <tbody>
@@ -43,6 +45,7 @@
             <tr>
                 <td class="text-white">@user.Email</td>
                 <td class="text-white">@user.CurrentRole</td>
+                <td class="text-white">@user.LocationIdentifier</td>
                 <td class="text-white">
                     <form asp-controller="UserManagement" asp-action="ChangeRole" method="post">
                         <input type="hidden" name="userId" value="@user.Id" />
@@ -54,6 +57,13 @@
                             }
                         </select>
                         <button type="submit">Change Role</button>
+                    </form>
+                </td>
+                <td class="text-white">
+                    <form asp-controller="UserManagement" asp-action="UpdateLocation" method="post">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <input type="number" name="locationIdentifier" placeholder="Enter Location Identifier" />
+                        <button type="submit">Update Location</button>
                     </form>
                 </td>
             </tr>

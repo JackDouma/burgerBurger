@@ -15,7 +15,6 @@ namespace burgerBurger.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
 
-
         public UserManagementController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext context)
         {
             _userManager = userManager;
@@ -33,6 +32,7 @@ namespace burgerBurger.Controllers
                              Id = user.Id,
                              Email = user.Email,
                              CurrentRole = role.Name,
+                             LocationIdentifier = user.locationIdentifier, 
                              AvailableRoles = _roleManager.Roles.Select(r => r.Name).ToList()
                          }).ToList();
 
@@ -53,6 +53,21 @@ namespace burgerBurger.Controllers
 
             var addResult = _userManager.AddToRoleAsync(user, newRole).Result;
             if (!addResult.Succeeded)
+            {
+                return View("Error");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateLocation(string userId, int locationIdentifier)
+        {
+            var user = _userManager.FindByIdAsync(userId).Result;
+
+            user.locationIdentifier = locationIdentifier;
+            var updateResult = _userManager.UpdateAsync(user).Result;
+            if (!updateResult.Succeeded)
             {
                 return View("Error");
             }

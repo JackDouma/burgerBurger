@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace burgerBurger.Models
 {
@@ -8,5 +9,8 @@ namespace burgerBurger.Models
         public string Email { get; set; }
         public string CurrentRole { get; set; }
         public List<string> AvailableRoles { get; set; }
+
+        [Display(Name = "Location Identifier")]
+        public int? LocationIdentifier { get; set; }
     }
 }
