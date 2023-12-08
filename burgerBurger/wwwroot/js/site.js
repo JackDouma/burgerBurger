@@ -32,6 +32,7 @@ function showMeat() {
 function showOtherIngredients() {
     document.getElementById('toppings').className = "";
     document.getElementById('condiments').className = "";
+    document.getElementById('submitCustom').className = "form-group";
 }
 
 function populateIngredientsCustom() {

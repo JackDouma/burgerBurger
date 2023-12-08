@@ -2,9 +2,17 @@
 
 @{
     ViewData["Title"] = "Create";
+    string result = Context.Request.Query["result"];
 }
 
 <h1>Create</h1>
+
+@if (result == "error")
+{
+    <div class="alert alert-danger">
+        <p>There was a problem with the creation process. Please try again.</p>
+    </div>
+}
 
 <h4>CustomItem</h4>
 <hr />
@@ -55,7 +63,7 @@
                 </fieldset>
             </div>
             <input type="hidden" asp-for="Ingredients" id="ingredientsInput" />
-            <div class="form-group">
+            <div class="form-group d-none" id="submitCustom">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

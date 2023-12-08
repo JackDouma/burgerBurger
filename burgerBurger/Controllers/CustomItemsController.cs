@@ -73,21 +73,39 @@ namespace burgerBurger.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Add(customBurger);
-                await _context.SaveChangesAsync();
+                bool breadFlag = false;
+                bool meatFlag = false;
                 foreach (string i in Ingredients.Split(" "))
                 {
                     if (!string.IsNullOrEmpty(i))
                     {
                         int ing = int.Parse(i);
+                        var outline = _context.InventoryOutline.Find(ing);
+
+                        if (outline.Category == Enums.InventoryCategory.Bread)
+                        {
+                            if (!breadFlag) breadFlag = true;
+                            else return RedirectToAction("Create", new { result = "error" });
+                        }
+                        if (outline.Category == Enums.InventoryCategory.Meat)
+                        {
+                            if (!meatFlag) meatFlag = true;
+                            else return RedirectToAction("Create", new { result = "error" });
+                        }
+
                         // increment the total calories of the item by the calories value of each selected ingredient
-                        customBurger.totalCalories += _context.InventoryOutline.Find(ing).calories;
-                        customBurger.Name += (_context.InventoryOutline.Find(ing).itemName + ", ");
+                        customBurger.totalCalories += outline.calories;
+                        customBurger.Name += (outline.itemName + ", ");
+
                         // add a record of the relationship between the newly made item and the ingredient
                         _context.ItemInventory.Add(new ItemInventory(customBurger.Id, ing));
                     }
                 }
+
+                if(!breadFlag || !meatFlag) return RedirectToAction("Create", new { result = "error" });
+
                 customBurger.Name = customBurger.Name.Substring(0, customBurger.Name.Length - 2);
+                _context.Add(customBurger);
                 await _context.SaveChangesAsync();
                 _context.CustomItem.Update(customBurger);
                 await _context.SaveChangesAsync();
