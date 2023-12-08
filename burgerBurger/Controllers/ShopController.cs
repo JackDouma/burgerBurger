@@ -295,6 +295,8 @@ namespace burgerBurger.Controllers
                 }
             }
 
+            HttpContext.Session.SetObject("InventoryUpdates", inventoryItem);
+
             // redirect to payment
             var user = _context.Users.FirstOrDefault(u => u.UserName == order.CustomerId);
             if (user.balance > order.OrderTotal)
@@ -325,6 +327,17 @@ namespace burgerBurger.Controllers
                 _context.SaveChanges();
                 var balanceChange = new BalanceAddition { Amount = 0 - total, Balance = user.balance, CustomerId = User.Identity.Name, PaymentDate = DateTime.Now };
                 _context.BalanceAdditions.Add(balanceChange);
+                _context.SaveChanges();
+                var ings = HttpContext.Session.GetObject<List<Inventory>>("InventoryUpdates");
+                foreach (var i in ings)
+                {
+                    var inv = await _context.Inventory.FindAsync(i.InventoryId);
+                    if (inv.quantity != i.quantity)
+                    {
+                        inv.quantity = i.quantity;
+                        _context.Inventory.Update(inv);
+                    }
+                }
                 _context.SaveChanges();
                 return RedirectToAction("SaveOrder");
             }

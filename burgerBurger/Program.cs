@@ -12,7 +12,10 @@ using Microsoft.EntityFrameworkCore;
         // Add services to the container.
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        {
+            options.UseSqlServer(connectionString);
+            options.EnableSensitiveDataLogging();
+        });
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
         // changed to false because we don't want required email confirmation
