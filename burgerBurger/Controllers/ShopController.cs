@@ -309,9 +309,16 @@ namespace burgerBurger.Controllers
         [Authorize]
         public IActionResult UseBalance()
         {
-            ViewData["balance"] = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).balance;
-            ViewData["total"] = HttpContext.Session.GetObject<Order>("Order").OrderTotal;
-            return View();
+            try
+            {
+                ViewData["balance"] = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).balance;
+                ViewData["total"] = HttpContext.Session.GetObject<Order>("Order").OrderTotal;
+                return View();
+            }
+            catch (NullReferenceException e)
+            {
+                return RedirectToAction("Cart");
+            }
         }
 
         [Authorize]
@@ -327,17 +334,6 @@ namespace burgerBurger.Controllers
                 _context.SaveChanges();
                 var balanceChange = new BalanceAddition { Amount = 0 - total, Balance = user.balance, CustomerId = User.Identity.Name, PaymentDate = DateTime.Now };
                 _context.BalanceAdditions.Add(balanceChange);
-                _context.SaveChanges();
-                var ings = HttpContext.Session.GetObject<List<Inventory>>("InventoryUpdates");
-                foreach (var i in ings)
-                {
-                    var inv = await _context.Inventory.FindAsync(i.InventoryId);
-                    if (inv.quantity != i.quantity)
-                    {
-                        inv.quantity = i.quantity;
-                        _context.Inventory.Update(inv);
-                    }
-                }
                 _context.SaveChanges();
                 return RedirectToAction("SaveOrder");
             }
@@ -360,7 +356,20 @@ namespace burgerBurger.Controllers
         // GET: /Shop/SaveOrder => create Order in DB, add OrderDetails, clear cart
         [Authorize]
         public IActionResult SaveOrder()
-        {        
+        {
+            // update inventory stock
+            var ings = HttpContext.Session.GetObject<List<Inventory>>("InventoryUpdates");
+            foreach (var i in ings)
+            {
+                var inv = _context.Inventory.Find(i.InventoryId);
+                if (inv.quantity != i.quantity)
+                {
+                    inv.quantity = i.quantity;
+                    _context.Inventory.Update(inv);
+                }
+            }
+            _context.SaveChanges();
+
             // get the order from session var
             var order = HttpContext.Session.GetObject<Order>("Order");
 
