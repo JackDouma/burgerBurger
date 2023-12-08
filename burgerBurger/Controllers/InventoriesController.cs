@@ -40,21 +40,44 @@ namespace burgerBurger.Controllers
                     var authToken = "63a35084de721329ed5e65a0ae743d6c";
 
                     TwilioClient.Init(accountSid, authToken);
-                    var to = new PhoneNumber("+16472271456"); // TODO: add logic to send to location manager
-                    var from = new PhoneNumber("+16154900859");
-                    var messageBody = $"Item '{inventory.itemName}' is about to expire on {inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife)}.";
 
-                    var message = MessageResource.Create(
-                        to: to,
-                        from: from,
-                        body: messageBody);
+        
+                    var locationId = inventory.LocationId;
+                    var location = _context.Location.FirstOrDefault(l => l.LocationId == locationId);
 
-                    inventory.MessageSent = true;
+   
 
-                    _context.SaveChanges();
+                    var managerUserRole = _context.UserRoles
+                        .FirstOrDefault(ur => ur.UserId == _context.Users
+                                                            .Where(u => u.locationIdentifier == location.LocationId)
+                                                            .Select(u => u.Id)
+                                                            .FirstOrDefault() &&
+                                                ur.RoleId == "2f3c1a4b-e860-4f72-9f35-026fdaff2dc8");
+
+                    if (managerUserRole != null)
+                    {
+                        var managerUser = _context.Users.FirstOrDefault(u => u.Id == managerUserRole.UserId);
+
+                        if (managerUser != null && !string.IsNullOrEmpty(managerUser.PhoneNumber))
+                        {
+                            var to = new PhoneNumber(managerUser.PhoneNumber);
+                            var from = new PhoneNumber("+16154900859");
+                            var messageBody = $"Item '{inventory.itemName}' is about to expire on {inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife)}.";
+
+                            var message = MessageResource.Create(
+                                to: to,
+                                from: from,
+                                body: messageBody);
+
+                            inventory.MessageSent = true;
+
+                            _context.SaveChanges();
+                        }
+                    }
+                }
                 }
             }
-        }
+
 
 
 
