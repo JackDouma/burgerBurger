@@ -28,7 +28,7 @@
                 <div class="col-lg-4 mb-3">
                     <div class="card mb-4">
                         <div class="card-body text-center h-100">
-                            <h3>@product.Name</h3>
+                            <h3 style="color: black;">@product.Name</h3>
                             <h5>@product.Description</h5>
                             <h5>@String.Format("{0:c}", product.Price)</h5>
                             @if (!string.IsNullOrEmpty(product.Photo))
@@ -59,7 +59,7 @@
                     <div class="card mb-4">
                         <div class="card-body text-center h-100">
                             <h2><span style="color: red;">BUY 1 GET 1 FREE</span></h2>
-                            <h3>@product.Name</h3>
+                            <h3 style="color: black;">@product.Name</h3>
                             <h5>@product.Description</h5>
                             <h5>@String.Format("{0:c}", product.Price)</h5>                          
                             @if (!string.IsNullOrEmpty(product.Photo))
@@ -92,7 +92,7 @@
                     <div class="card mb-4">
                         <div class="card-body text-center h-100">
                             <h2><span style="color: red;">@sale% OFF SALE</span></h2>
-                            <h3>@product.Name</h3>
+                            <h3 style="color: black;">@product.Name</h3>
                             <h5>@product.Description</h5>
                             <h5>WAS: @String.Format("{0:c}", product.Price)</h5>
                             <h5>NOW: @String.Format("{0:c}", newPrice)</h5>
