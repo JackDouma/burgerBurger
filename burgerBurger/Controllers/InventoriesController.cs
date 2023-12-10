@@ -24,10 +24,12 @@ namespace burgerBurger.Controllers
     public class InventoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public InventoriesController(ApplicationDbContext context)
+        public InventoriesController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         private void CheckAndSendTwilioMessages(Inventory inventory)
@@ -36,12 +38,8 @@ namespace burgerBurger.Controllers
             {
                 if (!inventory.MessageSent)
                 {
-                    var accountSid = "AC2e8546a4562326dc5114a3220c8fb7e3";
-                    var authToken = "63a35084de721329ed5e65a0ae743d6c";
+                    TwilioClient.Init(_configuration.GetValue<string>("Twilio:AccountSID"), _configuration.GetValue<string>("Twilio:AuthToken"));
 
-                    TwilioClient.Init(accountSid, authToken);
-
-        
                     var locationId = inventory.LocationId;
                     var location = _context.Location.FirstOrDefault(l => l.LocationId == locationId);
 
@@ -61,7 +59,7 @@ namespace burgerBurger.Controllers
                         if (managerUser != null && !string.IsNullOrEmpty(managerUser.PhoneNumber))
                         {
                             var to = new PhoneNumber(managerUser.PhoneNumber);
-                            var from = new PhoneNumber("+16154900859");
+                            var from = new PhoneNumber(_configuration.GetValue<string>("Twilio:PhoneNumber"));
                             var messageBody = $"Item '{inventory.itemName}' is about to expire on {inventory.itemExpirey = inventory.itemDeliveryDate.AddDays(inventory.itemShelfLife)}.";
 
                             var message = MessageResource.Create(

@@ -156,15 +156,10 @@ namespace burgerBurger.Controllers
             // assign user who bought it
             giftCard.CustomerId = User.Identity.Name;
 
-            // CODE HERE TO SEND EMAIL OR TEXT MESSAGE OF GIFTCARD CODE
-
-            var accountSid = "AC2e8546a4562326dc5114a3220c8fb7e3";
-            var authToken = "63a35084de721329ed5e65a0ae743d6c";
-
             // TRIAL ACCOUNT OF TWILIO WE CAN ONLY SEND TO VERIFIED NUMBERS (ALESSIO, MIKEY, JACK CURRENTLY)
-            TwilioClient.Init(accountSid, authToken);
+            TwilioClient.Init(_configuration.GetValue<string>("Twilio:AccountSID"), _configuration.GetValue<string>("Twilio:AuthToken"));
             var to = new PhoneNumber(giftCard.giftPhoneNumber);
-            var from = new PhoneNumber("+16154900859");
+            var from = new PhoneNumber(_configuration.GetValue<string>("Twilio:PhoneNumber"));
             var message = MessageResource.Create(
                 to: to,
             from: from,
