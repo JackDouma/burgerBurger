@@ -19,6 +19,9 @@
                 Store Location
             </th>
             <th class="text-white">
+                Hours of Operation
+            </th>
+            <th class="text-white">
                 Inventory
             </th>
             <th class="text-white"></th>
@@ -33,6 +36,9 @@
             </td>
             <td class="text-white">
                     @Html.DisplayFor(modelItem => item.locationCity) @Html.DisplayFor(modelItem => item.locationProvince) @Html.DisplayFor(modelItem => item.locationAddress)
+            </td>
+            <td class="text-white">
+                    @Html.DisplayFor(modelItem => item.OpeningTime.Value.Hour) - @Html.DisplayFor(modelItem => item.ClosingTime.Value.Hour)
             </td>
             <td class="text-white">
                         <a asp-controller="Inventories" asp-action="Index" asp-route-locationId="@item.LocationId" class="text-white">View</a>
