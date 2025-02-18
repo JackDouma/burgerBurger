@@ -4,7 +4,7 @@ COMP-3415 Software Engineering Semester Project
 
 Developed by Jackson Douma, Alessio Schiavi, Liam Slappended and Mike Rosanelli
 
-Live site can be found <a href="https://burgerburger.azurewebsites.net/" >here</a>.
+Live site has been taken down after running out of credits
 
 <h1>1. Introduction</h1>
 <h3>1.1 Purpose</h3>
